@@ -53,4 +53,14 @@ The DiceRoller component provides an interface for users to roll dice. Users can
 
 # Installation Instructions
 
-Todo
+## Requirments
+
+Node.js and NPM
+
+## Setup
+In the root directory of the project:
+* Install dependencies by running ```yarn install```.
+* Start the development server by running ```yarn start```.
+* Create a production build by running ```yarn build```.
+* Run tests by running ```yarn test```.
+* Run tests with code coverage by running ```yarn test:coverage```.
