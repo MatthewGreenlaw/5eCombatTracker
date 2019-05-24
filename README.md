@@ -3,23 +3,23 @@ This repository contains Matthew Greenlaw and Theron Anderson's final project fo
 
 ## Design Considerations
 The project is [released](https://github.com/MatthewGreenlaw/5eCombatTracker/releases) in successive [stages](#stages-of-development) by major components:
-1. DiceRoller
+1. DiceRoller  
 <img src="ReadmePictures/DiceRoller_wireframe.png"
      alt="Wireframe for DiceRoller component"
      style="float: left; margin-right: 10px; max-width: 320px;" />
 Provides an interface for users to roll dice. Users can select any number of any kind of die and attach a modifier to the roll. Users can make attack and ability check rolls with advantage (roll twice, take highest, add modifier) and/or disadvantage (roll twice, take lowest, add modifier) and can make damage rolls with or without critical damage (roll twice, add both, add modifier). Users can add as many sets of dice as they wish to roll at one time and remove sets of dice until there is only one set to roll.  
 
-2. Player Combat Tracker
+2. Player Combat Tracker  
 <img src="ReadmePictures/PlayerCombatTracker_wireframe.png"
      alt="Wireframe for PlayerCombatTracker component"
      style="float: left; margin-right: 10px; max-width: 320px;" />
 
-3. DM Combat Tracker
+3. DM Combat Tracker  
 <img src="ReadmePictures/DMCombatTracker_wireframe.png"
      alt="Wireframe for DMCombatTracker component"
      style="float: left; margin-right: 10px; max-width: 320px;" />
 
-4. Lookup Tool
+4. Lookup Tool  
 <img src="ReadmePictures/LookupTool_wireframe.png"
      alt="Wireframe for /LookupTool component"
      style="float: left; margin-right: 10px; max-width: 320px;" />
