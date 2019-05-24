@@ -4,33 +4,38 @@ This repository contains Matthew Greenlaw and Theron Anderson's final project fo
 ## Design Considerations
 The project is [released](https://github.com/MatthewGreenlaw/5eCombatTracker/releases) in successive [stages](#stages-of-development) by major components:
 1. DiceRoller
+<img src="ReadmePictures/DiceRoller_wireframe.png"
+     alt="Wireframe for DiceRoller component"
+     style="float: left; margin-right: 10px; max-width: 320px;" />
 Provides an interface for users to roll dice. Users can select any number of any kind of die and attach a modifier to the roll. Users can make attack and ability check rolls with advantage (roll twice, take highest, add modifier) and/or disadvantage (roll twice, take lowest, add modifier) and can make damage rolls with or without critical damage (roll twice, add both, add modifier). Users can add as many sets of dice as they wish to roll at one time and remove sets of dice until there is only one set to roll.  
 
 2. Player Combat Tracker
-todo
+<img src="ReadmePictures/PlayerCombatTracker_wireframe.png"
+     alt="Wireframe for PlayerCombatTracker component"
+     style="float: left; margin-right: 10px; max-width: 320px;" />
 
 3. DM Combat Tracker
-todo
+<img src="ReadmePictures/DMCombatTracker_wireframe.png"
+     alt="Wireframe for DMCombatTracker component"
+     style="float: left; margin-right: 10px; max-width: 320px;" />
 
 4. Lookup Tool
-todo
+<img src="ReadmePictures/LookupTool_wireframe.png"
+     alt="Wireframe for /LookupTool component"
+     style="float: left; margin-right: 10px; max-width: 320px;" />
 
 ### Todo
-todo
+
 
 # Stages of Development
 1. [ ] [Stage 1](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-1): Dice Roller
    1. [ ] Dice component
-      * [x] Implement
+      * [x] Implementation
       * [ ] Unit Tests
    2. [ ] DiceRoller component
-      * [x] Implement
+      * [x] Implementation
       * [ ] Unit Test
    3. [ ] Integration Tests
-
-<img src="ReadmePictures/DiceRoller_wireframe.png"
-     alt="Wireframe for DiceRoller component"
-     style="float: left; margin-right: 10px; max-width: 320px;" />
 
 <img src="ReadmePictures/DiceRoller_completed.png"
      alt="Completed DiceRoller component"
@@ -38,27 +43,13 @@ todo
 
 2. [x] [Stage 2](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-2): Player Combat Tracker
 
-Todo
 
-<img src="ReadmePictures/PlayerCombatTracker_wireframe.png"
-     alt="Wireframe for PlayerCombatTracker component"
-     style="float: left; margin-right: 10px; max-width: 320px;" />
 
 3. [ ] [Stage 3](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-3): DM Combat Tracker
 
-Todo
-
-<img src="ReadmePictures/DMCombatTracker_wireframe.png"
-     alt="Wireframe for DMCombatTracker component"
-     style="float: left; margin-right: 10px; max-width: 320px;" />
 
 4. [ ] [Stage 4](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-4): Lookup Tool
 
-Todo
-
-<img src="ReadmePictures/LookupTool_wireframe"
-     alt="Wireframe for /LookupTool component"
-     style="float: left; margin-right: 10px; max-width: 320px;" />
 
 # Installation Instructions
 
