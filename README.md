@@ -41,8 +41,7 @@ The DiceRoller component provides an interface for users to roll dice. Users can
      alt="Completed DiceRoller component"
      style="float: left; margin-right: 10px; max-width: 320px;" />
 
-2. [x] [Stage 2](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-2): Player Combat Tracker
-
+2. [ ] [Stage 2](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-2): Player Combat Tracker
 
 
 3. [ ] [Stage 3](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-3): DM Combat Tracker

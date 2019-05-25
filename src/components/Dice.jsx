@@ -1,14 +1,11 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import {
-  Button,
-  Toast, ToastHeader, ToastBody, Fade,
-  Container, Row, Col,
+  Toast, ToastHeader, ToastBody,
+  Container, Row,
   Form, FormGroup, Label, Input,  
 } from 'reactstrap'
 import './styles.css'
-
-var RandomOrg = require('random-org');
 
 export default class DiceRoller extends React.Component {
   static propTypes = {
@@ -16,7 +13,9 @@ export default class DiceRoller extends React.Component {
     n: PropTypes.number,
     die: PropTypes.number,
     mod: PropTypes.number,
-    res: PropTypes.number,
+    res: PropTypes.string,
+    advantage: PropTypes.number,
+    disadvantage: PropTypes.number,
     removable: PropTypes.bool,
   }
 
@@ -31,68 +30,121 @@ export default class DiceRoller extends React.Component {
       die: this.props.die,
       mod: this.props.mod,
       res: this.props.res,
+      advantage: false,
+      disadvantage: false,
+      critical: false,
       hidden: false,
     }
   }
 
   async setN(n) {
-    await this.setState({n})
+    await this.setState({n, res: 0})
     this.props.callback({
       nth: this.state.nth,
       n: n,
       die: this.state.die,
       mod: this.state.mod,
-      res: this.state.res,
+      res: 0,
+      advantage:  this.state.advantage,
+      disadvantage:  this.state.disadvantage,
+      critical: this.statecritical,
       hidden: this.state.hidden,
-    });
+    }, false);
   }
 
   async setDie(die) {
-    await this.setState({die})
+    await this.setState({die, res: 0})
     this.props.callback({
       nth: this.state.nth,
       n: this.state.n,
       die: die,
       mod: this.state.mod,
-      res: this.state.res,
+      res: 0,
+      advantage:  this.state.advantage,
+      disadvantage:  this.state.disadvantage,
+      critical: this.statecritical,
       hidden: this.state.hidden,
-    });
+    }, false);
   }
 
   async setMod(mod) {
-    await this.setState({mod})
+    await this.setState({mod, res: 0})
     this.props.callback({
       nth: this.state.nth,
       n: this.state.n,
       die: this.state.die,
       mod: mod,
-      res: this.state.res,
+      res: 0,
+      advantage:  this.state.advantage,
+      disadvantage:  this.state.disadvantage,
+      critical: this.statecritical,
       hidden: this.state.hidden,
-    });
+    }, false);
   }
 
   async hide() {
     await this.setState({hidden: true})
     this.props.callback({
       nth: this.state.nth,
-      n: this.state.n,
-      die: this.state.die,
-      mod: this.state.mod,
-      res: this.state.res,
       hidden: true,
-    });
+    }, true);
   }
 
   render () {
+
+    var setAdvantage = () => {
+      this.props.callback({
+        nth: this.state.nth,
+        n: 1,//Advantage rolls limited to 1 primary dice
+        die: this.state.die,
+        mod: this.state.mod,
+        res: 0,
+        advantage: !this.state.advantage,
+        disadvantage: this.state.disadvantage,
+        critical: this.statecritical,
+        hidden: this.state.hidden,
+      }, true);
+      this.setState({advantage: !this.state.advantage, n: 1, res: 0})
+    }
+
+    var setDisadvantage = () => {
+      this.props.callback({
+        nth: this.state.nth,
+        n: 1,//Disadvantage rolls limited to 1 primary dice
+        die: this.state.die,
+        mod: this.state.mod,
+        res: 0,
+        advantage: this.state.advantage,
+        disadvantage: !this.state.disadvantage,
+        critical: this.statecritical,
+        hidden: this.state.hidden,
+      }, true);
+      this.setState({disadvantage: !this.state.disadvantage, n: 1, res: 0})
+    }
+
+    var setCritical = () => {
+      this.props.callback({
+        nth: this.state.nth,
+        n: this.state.n,
+        die: this.state.die,
+        mod: this.state.mod,
+        res: 0,
+        advantage: this.state.advantage,
+        disadvantage: this.state.disadvantage,
+        critical: !this.statecritical,
+        hidden: this.state.hidden,
+      }, true);
+      this.setState({critical: !this.state.critical, res: 0})
+    }
 
     var attackDie = () => {
       return (
         <Form inline>
           <FormGroup check>
-            <Label check sm={2}><Input type="checkbox"/> Advantage </Label>
+            <Label check sm={2}><Input type="checkbox" onChange={setAdvantage} checked={this.state.advantage}/> Advantage </Label>
           </FormGroup>
           <FormGroup check>
-            <Label check sm={2}><Input type="checkbox"/> Disadvantage </Label>
+            <Label check sm={2}><Input type="checkbox" onChange={setDisadvantage} checked={this.state.disadvantage}/> Disadvantage </Label>
           </FormGroup>
         </Form>
       )
@@ -103,7 +155,7 @@ export default class DiceRoller extends React.Component {
         <Form inline>
           <FormGroup check>
             <Label check sm={2}>
-              <Input type="checkbox" />{' '}
+              <Input type="checkbox" onClick={setCritical} checked={this.state.critical} />{' '}
               Critical
             </Label>
         </FormGroup>
@@ -116,41 +168,41 @@ export default class DiceRoller extends React.Component {
     }
 
     //{this.props.removable ? <Button close onClick={this.hide} /> : null}
-      return(
-        <Toast fade={ false }>
-          <ToastHeader toggle={this.props.removable ? this.hide : null}>
-            {dieType()}
-          </ToastHeader>
-          <ToastBody>
-            <Container>
-            </Container>
-            <Form inline>
-              <FormGroup inline>
-                <Row>
-                  <Label>
-                    <Input type="number" onChange={e => this.setN(+e.target.value)} placeholder={this.state.n}/>
-                    {' d '} 
-                  </Label>
-                  <Label>
-                    <Input type="select" onChange={e => this.setDie(+e.target.value)} placeholder={this.state.die}>
-                      <option>4</option>
-                      <option>6</option>
-                      <option>8</option>
-                      <option>10</option>
-                      <option selected="selected">20</option>
-                    </Input>
-                    {' + '}
-                  </Label>
-                  <Label>
-                    <Input type="number" onChange={e => this.setMod(+e.target.value)} placeholder={this.state.mod}/>
-                    {' = '}
-                    <Input type="text" value={this.props.res} readOnly/>
-                  </Label>
-                </Row>
-              </FormGroup>
-            </Form>
-          </ToastBody>
-        </Toast>
-      )
+    return(
+      <Toast fade={ false }>
+        <ToastHeader toggle={this.props.removable ? this.hide : null}>
+          {dieType()}
+        </ToastHeader>
+        <ToastBody>
+          <Container>
+          </Container>
+          <Form inline>
+            <FormGroup inline>
+              <Row>
+                <Label>
+                  <Input type="number" onChange={e => this.setN(+e.target.value)} placeholder={this.state.n}/>
+                  {' d '} 
+                </Label>
+                <Label>
+                  <Input type="select" onChange={e => this.setDie(+e.target.value)} placeholder={this.state.die} defaultValue={20}>
+                    <option>4</option>
+                    <option>6</option>
+                    <option>8</option>
+                    <option>10</option>
+                    <option>20</option>
+                  </Input>
+                  {' + '}
+                </Label>
+                <Label>
+                  <Input type="number" onChange={e => this.setMod(+e.target.value)} placeholder={this.state.mod}/>
+                  {' = '}
+                  <Input type="text" value={this.props.res} readOnly/>
+                </Label>
+              </Row>
+            </FormGroup>
+          </Form>
+        </ToastBody>
+      </Toast>
+    )
   }
 }

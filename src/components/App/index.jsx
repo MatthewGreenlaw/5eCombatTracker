@@ -4,9 +4,11 @@ import {
   Col,
   Container,
 } from 'reactstrap'
+import DiceRoller from './../DiceRoller'
 
 const App = () => (
   <Fragment >
+    <DiceRoller/>
   </Fragment>
 );
 
