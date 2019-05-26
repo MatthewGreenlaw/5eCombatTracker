@@ -1,8 +1,1 @@
-<<<<<<< HEAD
 /node_modules/
-=======
-setup.bash
-node_modules/
-yarn-error.log
-yarn.lock
->>>>>>> 4601ff20c0c425348905f1c4aee7a570ec4e9822
