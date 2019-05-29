@@ -5,13 +5,12 @@ import {
 } from 'reactstrap'
 import './styles.css'
 
-export default class InitTracker extends React.Component {
+export default class HealthTracker extends React.Component {
   static propTypes = {
-    players: PropTypes.array,
+
 }
 
   render(){
-    var arr = [];
 
     this.props.players.forEach((player)=>{
       arr.push(
@@ -25,8 +24,8 @@ export default class InitTracker extends React.Component {
       <Table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Initiative</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
