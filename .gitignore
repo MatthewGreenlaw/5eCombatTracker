@@ -1,4 +1,2 @@
-setup.bash
-node_modules/
-yarn-error.log
-yarn.lock
+/node_modules/
+/client/node_modules/
