@@ -2,13 +2,21 @@
   "name": "5e_combat_tracker",
   "version": "1.0.0",
   "scripts": {
+    "install:server": "yarn install",
+    "install:client": "cd client && yarn install --mutex file",
+    "install": "concurrently --kill-others-on-fail \"yarn install:server\" \"yarn install:client\"",
     "client": "cd client && yarn start",
     "server": "nodemon socketServer.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "build": "cd client && react-scripts build"
   },
   "dependencies": {
+    "react-scripts": "3.0.1",
     "nodemon": "^1.17.3",
-    "socket.io": "^2.1.0"
+    "socket.io": "^2.1.0",
+    "gh-pages": "^2.0.1",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
