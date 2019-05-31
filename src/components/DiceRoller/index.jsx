@@ -4,7 +4,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { Dice } from "./../components";
+import Dice from "./../Dice";
 import "./styles.css";
 import { generateIntegers } from "./../utils/randomNumberGenerator";
 
