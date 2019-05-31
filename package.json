@@ -1,6 +1,7 @@
 {
   "name": "5e_combat_tracker",
   "version": "1.0.0",
+  "homepage": "https://matthewgreenlaw.github.io/5eCombatTracker/",
   "scripts": {
     "install:server": "yarn install",
     "install:client": "cd client && yarn install --mutex file",
