@@ -9,9 +9,9 @@
     "client": "cd client && yarn start",
     "server": "nodemon socketServer.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "build": "cd client && react-scripts build",
+    "build": "cd client && yarn build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "cd client && gh-pages -d build"
   },
   "dependencies": {
     "react-scripts": "3.0.1",

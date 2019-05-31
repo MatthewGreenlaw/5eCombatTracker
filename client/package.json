@@ -2,7 +2,7 @@
   "name": "dm_combat_tracker",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://matthewgreenlaw.github.io/DMCombatTracker",
+  "homepage": "https://matthewgreenlaw.github.io/5eCombatTracker/",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "gh-pages": "^2.0.1",
