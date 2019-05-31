@@ -8,15 +8,15 @@
     "client": "cd client && yarn start",
     "server": "nodemon socketServer.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "build": "cd client && react-scripts build"
+    "build": "cd client && react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "react-scripts": "3.0.1",
     "nodemon": "^1.17.3",
     "socket.io": "^2.1.0",
-    "gh-pages": "^2.0.1",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "gh-pages": "^2.0.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
