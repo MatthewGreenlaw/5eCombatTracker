@@ -3,23 +3,44 @@
   "version": "1.0.0",
   "homepage": "https://matthewgreenlaw.github.io/5eCombatTracker/",
   "scripts": {
-    "install:server": "yarn install",
-    "install:client": "cd client && yarn install --mutex file",
-    "install": "concurrently --kill-others-on-fail \"yarn install:server\" \"yarn install:client\"",
-    "client": "cd client && yarn start",
-    "server": "nodemon socketServer.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "build": "cd client && yarn build",
+    "start": "concurrently --kill-others-on-fail \"nodemon socketServer.js\" \"react-scripts start\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage",
+    "eject": "react-scripts eject",
+    "lint": "node_modules/.bin/eslint ./src ./server.js",
+    "pretty": "prettier --write --tab-width 2 \"src/**/*.js\"",
     "predeploy": "npm run build",
-    "deploy": "cd client && gh-pages -d build"
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "react-scripts": "3.0.1",
     "nodemon": "^1.17.3",
     "socket.io": "^2.1.0",
+    "bootstrap": "^4.3.1",
+    "node-sass": "^4.11.0",
+    "random-org": "^1.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
+    "reactstrap": "^8.0.0",
+    "socket.io-client": "^2.1.0",
     "gh-pages": "^2.0.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
+  },
+  "proxy": "http://localhost:3001",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
