@@ -6,6 +6,7 @@ import {
   Col, Row,
 } from 'reactstrap'
 import AttackRoller from './../AttackRoller'
+import HealthTracker from './../HealthTracker'
 
 import io from 'socket.io-client';
 
@@ -54,7 +55,7 @@ export default class Entity extends React.Component {
         </CardHeader>
         <Row>
           <Col xs="2">
-            Player Stats
+            <HealthTracker character={"player1"} ac={"18"} max={"40"} socket={this.socket}/>
           </Col>
           <Col xs="10">
             <Row>
