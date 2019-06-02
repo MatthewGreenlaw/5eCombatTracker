@@ -35,5 +35,4 @@ export default class InitTracker extends React.Component {
       </Table>
     )
   }
-
 }
