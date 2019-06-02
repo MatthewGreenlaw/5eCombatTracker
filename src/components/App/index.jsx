@@ -9,9 +9,6 @@ import {
 const App = () => (
   <Fragment >
     <DiceRoller/>
-    <Container>
-      <HealthTracker character={"player1"} ac={"18"} max={"40"}/>
-    </Container>
   </Fragment>
 );
 

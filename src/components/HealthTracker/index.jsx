@@ -8,7 +8,9 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  Row,
+  Container
 } from 'reactstrap'
 import './styles.css'
 
@@ -16,61 +18,63 @@ export default class HealthTracker extends React.Component {
   static propTypes = {
     character: PropTypes.string,
     ac: PropTypes.number,
-    max: PropTypes.number,
-    current: PropTypes.number,
-    temp: PropTypes.number,
-    damage: PropTypes.number,
-    res: PropTypes.string
+    max: PropTypes.number
   }
 
   constructor(props) {
     super(props);
-
     this.state = {
-      character: this.props.character,
-      ac: this.props.ac,
-      max: this.props.max,
       current: this.props.max,
-      res: this.props.res,
       temp: 0,
       damage: 0
     };
   }
 
   render(){
-    /*var setTemp = () => {
-      this.current = (this.max + this.temp) - this.damage;
-      this.setState(current);
+    var temp = this.props.temp;
+    var damage = this.props.damage;
+    var max = this.props.max;
+
+    var setTempHealth = (e) => {
+      if(+e.target.value <= 0){
+        this.setState({
+          current: this.props.max - this.state.damage,
+          temp: 0
+        })
+      }
+      else{
+        this.setState({
+          current: +this.props.max + (+e.target.value) - this.state.damage,
+          temp: +e.target.value
+        })
+      }
     }
 
-    var setDamage = () => {
-      // this.props.socket.on('damagePlayer', (dmg) => {//do stuff with dmg})
-      this.current = this.max + this.temp) - this.damage;
-      this.setState(current);
-    }*/
-
-    var setCurrent = () => {
-      this.props.callback(
-          {
-            character: this.props.character,
-            ac: this.props.ac,
-            max: this.props.max,
-            current: this.props.max,
-            res: this.props.res,
-            temp: this.props.temp,
-            damage: this.props.damage
-          },
-          false
-        );
-        var current = (this.props.max + this.props.temp) - this.props.damage;
-        this.setState({ current: current, res: 0 });
+    var setDamage = (e) => {
+      updateDamage(+e.target.value)
     }
+
+    var updateDamage = (damage) => {
+      this.setState({
+        current: +this.props.max + this.state.temp - (damage),
+        damage: damage
+      })
+    }
+
+    this.props.socket.on("receiveDamage", damage => updateDamage(this.state.damage + damage));
 
 
     return(
       <Toast fade={false}>
         <ToastHeader>
-          {this.props.character}
+          <Container>
+            <Row>
+              <h1>{this.props.character}</h1>
+            </Row>
+            <Row>
+             {"ac: "}{this.props.ac}
+            </Row>
+          </Container>
         </ToastHeader>
         <ToastBody>
           <Table>
@@ -84,22 +88,28 @@ export default class HealthTracker extends React.Component {
                 <td>{this.props.max}</td>
               </tr><tr>
                 <td>Current HP</td>
-                <td>{this.props.current}</td>
+                <td>{this.state.current}</td>
+              </tr>
+              <tr>
+                <td>Temp HP</td>
+                <td><Input
+                  onChange={setTempHealth} //@todo validate for negative #s
+                  type="number"
+                  placeholder={this.state.temp}
+                  value={temp}
+                  className={"width-sm"} /></td>
+              </tr>
+              <tr>
+                <td>Damage</td>
+                <td><Input
+                onChange={setDamage} //@todo validate for negative #s
+                type="number"
+                placeholder={this.state.damage}
+                value={damage}
+                className={"width-sm"} /></td>
               </tr>
             </tbody>
           </Table>
-          <Form>
-            <FormGroup>
-              <Label>
-                {"Temp HP "}
-                <Input type="number" value={this.props.temp} className={"width-sm"} />
-              </Label>
-              <Label>
-                {"Damage "}
-                <Input type="number" value={this.props.damage} className={"width-sm"} />
-              </Label>
-            </FormGroup>
-          </Form>
         </ToastBody>
       </Toast>
     )
