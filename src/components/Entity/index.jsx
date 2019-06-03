@@ -8,8 +8,6 @@ import {
 import AttackRoller from './../AttackRoller'
 import HealthTracker from './../HealthTracker'
 
-import io from 'socket.io-client';
-
 export default class Entity extends React.Component {
   constructor(props) {
     super(props);
@@ -54,10 +52,10 @@ export default class Entity extends React.Component {
           {log}
         </CardHeader>
         <Row>
-          <Col xs="2">
-            <HealthTracker character={"player1"} ac={"18"} max={"40"} socket={this.socket}/>
+          <Col xs="3">
+            <HealthTracker character={this.props.name} ac={this.props.ac} max={this.props.maxHP} socket={this.socket}/>
           </Col>
-          <Col xs="10">
+          <Col xs="9">
             <Row>
               <Col>
                 Action
