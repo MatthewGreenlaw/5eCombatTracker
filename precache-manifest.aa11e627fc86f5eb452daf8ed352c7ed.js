@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "97f6c4d12b51a6a8a7b80540dfbc73c4",
+    "revision": "a8728ade528de7c7a1f9fd090e68c62b",
     "url": "/5eCombatTracker/index.html"
   },
   {
