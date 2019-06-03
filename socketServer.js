@@ -1,11 +1,29 @@
 const io = require('socket.io')()
 const port = 3001;
 var connections = []
+var players = []
+var enemies = []
 
 function addConnection (socket) {
-    connections.push({type: socket.handshake.query.type, id: socket.id})
+    connections.push({
+      type: socket.handshake.query.type,
+      name: socket.handshake.query.name,
+      id: socket.id
+    })
     console.log("New Connection:")
     console.log(connections)
+}
+
+function removeEntity(list, socket) {
+  for (var i in list) {
+    if (list[i].id === socket.id){
+      list.splice(i, 1);
+
+      console.log("Removed Connection:")
+      console.log(connections)
+      return
+    }
+  }
 }
 
 function removeConnection (socket) {
@@ -21,8 +39,9 @@ function removeConnection (socket) {
 
 io.on('connection', (socket) => {
   addConnection(socket)
+  io.emit('playerJoin', players)
   socket.on('disconnect', () => {
-    removeConnection(socket)
+    removeEntity(connections, socket)
   })
 
   socket.on('actionFromPlayer', (data) => {
@@ -32,6 +51,10 @@ io.on('connection', (socket) => {
       action: data.action,
       roll: data.roll
     })
+  })
+
+  socket.on('getPlayers', () => {
+    io.emit('sendPlayers', connections)
   })
 })
 
