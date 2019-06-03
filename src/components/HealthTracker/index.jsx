@@ -72,17 +72,13 @@ export default class HealthTracker extends React.Component {
               <h1>{this.props.character}</h1>
             </Row>
             <Row>
-             {"ac: "}{this.props.ac}
+             {"AC: "}{this.props.ac}
             </Row>
           </Container>
         </ToastHeader>
         <ToastBody>
           <Table>
             <tbody>
-              <tr>
-                <td>AC</td>
-                <td>{this.props.ac}</td>
-              </tr>
               <tr>
                 <td>Max HP</td>
                 <td>{this.props.max}</td>
