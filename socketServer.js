@@ -25,6 +25,10 @@ io.on('connection', (socket) => {
     removeConnection(socket)
   })
 
+  socket.on('updateInitiative', (player) => {
+    io.emit('updateInitiative', player)
+  })
+  
   socket.on('actionFromPlayer', (data) => {
     io.emit('actionFromServer', {
       from: data.name,

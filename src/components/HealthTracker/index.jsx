@@ -5,9 +5,6 @@ import {
   Toast,
   ToastHeader,
   ToastBody,
-  Form,
-  FormGroup,
-  Label,
   Input,
   Row,
   Container
@@ -33,7 +30,6 @@ export default class HealthTracker extends React.Component {
   render(){
     var temp = this.props.temp;
     var damage = this.props.damage;
-    var max = this.props.max;
 
     var setTempHealth = (e) => {
       if(+e.target.value <= 0){

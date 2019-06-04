@@ -61,11 +61,6 @@ export default class Entity extends React.Component {
           <Col xs="10">
             <Row>
               <Col>
-              <Container>
-                <InitTracker players={[{name: 'player1', init: 18},{name: 'player2', init: 22}]}/>
-              </Container>
-              </Col>
-              <Col>
                 Action
                 <Label>
                   <Input

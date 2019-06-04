@@ -1,13 +1,17 @@
 import React, {Fragment} from 'react';
 import PropTypes from "prop-types";
+import { generateIntegers } from "./../utils/randomNumberGenerator";
 import {
   Table,
+  Form,
+  Button,
+  Input
 } from 'reactstrap'
 import './styles.css'
 
 export default class InitTracker extends React.Component {
   static propTypes = {
-    players: PropTypes.array,
+    players: PropTypes.array
   }
 
   constructor(props) {
@@ -19,24 +23,32 @@ export default class InitTracker extends React.Component {
 
   render(){
     var arr = [];
+    var n = 1;
+    var die = 20;
     var modifier = 0;
 
-    var callback = () => {
-      console.log("AttackRoller => n: %s, die: %s, mod: %s", n, die, modifier)
+    var rollInit = () => {
+      //console.log("InitRoller => n: %s, die: %s, mod: %s", n, die, modifier)
       generateIntegers(
         (vals) => {
-          this.props.callback(vals[0] + +modifier)
+          sendInit(vals[0] + +modifier)
         },
         { n: 1, min: 1, max: 20, replacement: true }
       )
     }
 
+    var sendInit = (newInit) => {
+      this.props.socket.emit("updateInitiative", {
+        id: this.props.socket.id,
+        name: this.props.name,
+        init: newInit
+      });
+    }
+
     var displayInitRoll = () => {
-      n = 1;
-      die = 20;
       return (
         <Form inline>
-          <Button onClick={callback} style = {{marginRight: '1em'}}>
+          <Button onClick={rollInit} style = {{marginRight: '1em'}}>
             Attack
           </Button>
           {' + '}
@@ -53,14 +65,19 @@ export default class InitTracker extends React.Component {
       updateInit(+e.target.value)
     }
 
-    var updateInit = (player, ac) => {
-      var players = this.state.players;
-      this.props.players.forEach((player)=>{
-        if(this.props.name === player)
-          this.props.ac = ac;
-      })
-      this.setState({players});
+    var updateInit = (player) => {
+      var players = this.state.players
+      for (var i in players) {
+        var _player = players[i]
+        if(player.id === _player.id){
+          players[i].init = player.init
+          this.setState({players})
+          return
+        }
+      }
     }
+
+    this.props.socket.on("updateInitiative", player => updateInit(player));
 
     this.props.players.forEach((player)=>{
       arr.push(
