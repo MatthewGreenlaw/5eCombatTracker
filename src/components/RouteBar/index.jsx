@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Jumbotron,
   Navbar, Nav, NavItem, NavbarBrand
 } from 'reactstrap'
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
@@ -26,19 +27,19 @@ export default class RouteBar extends React.Component {
       //Prevent multiple connections
       if(newPlayer){
         newPlayer = !newPlayer;
-        socket = openSocket('http://matthewgreenlaw.com:3001', {query: {type: "Player", name: playerData.name}})
+        socket = openSocket('http://localhost:3001', {query: {type: "Player", name: playerData.name}})
         socket.emit('newPlayer', {
           id: socket.id,
           name: playerData.name
         })
       }
-      return <Entity
+      return <Jumbotron><Entity
         name={playerData.name}
         ac={playerData.ac}
         maxHP={playerData.maxHP}
         init={playerData.init}
         socket={socket}
-      />
+      /></Jumbotron>
     }
 
     function callback (data) {
