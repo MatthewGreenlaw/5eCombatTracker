@@ -1,7 +1,6 @@
 import React from 'react'
 import {
-  Card,
-  CardHeader,
+  Container,
   Label, Input,
   Col, Row,
 } from 'reactstrap'
@@ -47,10 +46,7 @@ export default class Entity extends React.Component {
     }
 
     return (
-      <Card>
-        <CardHeader>
-          {log}
-        </CardHeader>
+      <Container>
         <Row>
           <Col xs="3">
             <HealthTracker character={this.props.name} ac={this.props.ac} max={this.props.maxHP} socket={this.socket}/>
@@ -87,7 +83,7 @@ export default class Entity extends React.Component {
             <AttackRoller callback={rollerCallback} action={this.state.action}/>
           </Col>
         </Row>
-      </Card>
+      </Container>
     )
   }
 }
