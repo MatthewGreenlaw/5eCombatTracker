@@ -5,64 +5,70 @@ import {
   Table,
   Form,
   Button,
-  Input
+  Input, Label,
 } from 'reactstrap'
 import './styles.css'
 
 export default class InitTracker extends React.Component {
   static propTypes = {
-    players: PropTypes.array
+    players: PropTypes.array,
+    socket: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
+    this.socket = this.props.socket
+    this.name = this.socket.io.opts.query.name
+
+
+
     this.state = {
-      players: this.props.players
+      players: this.props.players.sort((a, b) => {return b.init - a.init}),
+      init: null,
     };
   }
 
   render(){
-    var arr = [];
-    var n = 1;
-    var die = 20;
+    var playersRows = [];
     var modifier = 0;
 
     var rollInit = () => {
-      //console.log("InitRoller => n: %s, die: %s, mod: %s", n, die, modifier)
+      console.log("InitRoller")
       generateIntegers(
         (vals) => {
-          sendInit(vals[0] + +modifier)
+          sendInit(vals[0] + modifier)
         },
         { n: 1, min: 1, max: 20, replacement: true }
       )
     }
 
     var sendInit = (newInit) => {
-      this.props.socket.emit("updateInitiative", {
-        id: this.props.socket.id,
-        name: this.props.name,
+      this.socket.emit("updateInitiative", {
+        id: this.socket.id,
+        name: this.name,
         init: newInit
       });
     }
 
     var displayInitRoll = () => {
       return (
-        <Form inline>
-          <Button onClick={rollInit} style = {{marginRight: '1em'}}>
-            Attack
-          </Button>
-          {' + '}
+        <Fragment>
+        modifier
+        <Label>
           <Input
             type="number"
-            onChange={value => modifier = +value}
+            onChange={e => modifier = +e.target.value}
             placeholder={modifier}
+            className={"diceInput"}
           />
-        </Form>
+        </Label>
+          <Button
+            onClick={rollInit}
+            style = {{marginRight: '1em'}}
+            block={true}
+          > Roll Initiative </Button>
+        </Fragment>
       )
-    }
-
-    var setInit = (e) => {
-      updateInit(+e.target.value)
     }
 
     var updateInit = (player) => {
@@ -71,35 +77,41 @@ export default class InitTracker extends React.Component {
         var _player = players[i]
         if(player.id === _player.id){
           players[i].init = player.init
+          players = players.sort((a, b) => {return b.init - a.init})
           this.setState({players})
           return
         }
       }
+      players.push(player)
+      players = players.sort((a, b) => {return b.init - a.init})
+      this.setState({players})
     }
+    this.socket.on("updateInitiative", player => updateInit(player));
 
-    this.props.socket.on("updateInitiative", player => updateInit(player));
-
-    this.props.players.forEach((player)=>{
-      arr.push(
-        <tr>
+    this.props.players.forEach((player, i)=>{
+      playersRows.push(
+        <tr key={i}>
           <td>{player.name}</td>
           <td>{player.init}</td>
         </tr>
       )
     })
+
     return(
-      <Table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Initiative</th>
-          </tr>
-        </thead>
-        <tbody>
-          {arr}
-          <tr>{displayInitRoll}</tr>
-        </tbody>
-      </Table>
+      <Fragment>
+        <Table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Initiative</th>
+            </tr>
+          </thead>
+          <tbody>
+            {playersRows}
+          </tbody>
+        </Table>
+        {displayInitRoll()}
+      </Fragment>
     )
   }
 }
