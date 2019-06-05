@@ -1,24 +1,28 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from "prop-types";
 import {
-  Form, FormGroup,
-  Label, Input,
+  Form, FormGroup, FormText,
+  Label, Input, Option,
   Button,
 } from 'reactstrap'
+import './style.scss'
 
 export default class NewCharacterForm extends React.Component {
   static propTypes = {
     callback: PropTypes.func,
   }
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    var name, ac, maxHP, init;
+    var name, ac, maxHP;
 
     var filledAllFields = () => {
       if (name === undefined ||
         ac === undefined ||
-        maxHP === undefined ||
-        init === undefined
+        maxHP === undefined
       )
         return false
 
@@ -32,12 +36,11 @@ export default class NewCharacterForm extends React.Component {
             name: name,
             ac: ac,
             maxHP: maxHP,
-            init: init
           }
         )
       }
-      else {
-        this.props.callback("error")
+      else{
+        alert("Fill out all fields.")
       }
     }
 
@@ -55,11 +58,7 @@ export default class NewCharacterForm extends React.Component {
           <Label for="characterMaxHP">Maximum HP:</Label>
           <Input type="number" name="ac" id="characterMaxHP" placeholder="40, 20, 55..." onChange={e => maxHP = +e.target.value}/>
         </FormGroup>
-        <FormGroup>
-          <Label for="characterinit">Initiative Modifier:</Label>
-          <Input type="number" name="init" id="characterinit" placeholder="40, 20, 55..." onChange={e => init = +e.target.value}/>
-        </FormGroup>
-        <Button onClick={sendData}>Submit</Button>
+        <Button onClick={sendData} block={true}>Submit</Button>
       </Form>
     )
   }
