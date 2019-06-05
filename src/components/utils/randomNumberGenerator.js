@@ -2,7 +2,7 @@ var randomAPI = require("random-org");
 
 export const generateIntegers = (func, params) => {
   var generator = new randomAPI({
-    apiKey: "61804754-7dfe-4259-9e1b-7dc2ca110a00"
+    apiKey: "d76c87df-2f80-4ca0-9cd6-88db97b0cd88"
   });
   generator
     .generateIntegers(params)
