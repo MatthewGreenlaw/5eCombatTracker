@@ -31,15 +31,22 @@ export default class ActionTracker extends React.Component {
 
     this.state = {
       target: '',
-      targets: ["None"],
+      targets: [],
       action: 'Attack',
     }
 
   }
 
   render () {
+
+    this.socket.on('initTargets', targets => initTargets(targets))
     this.socket.on('updateTargets', targets => this.setState({targets}))
 
+    var initTargets = (targets) => {
+      targets.map((target) => {
+        return target.name
+      })
+    }
     var rollerCallback = (roll) => {
       if(this.state.target.length > 0){
         this.socket.compress(false).emit('actionFromPlayer',
@@ -104,9 +111,6 @@ export default class ActionTracker extends React.Component {
                   </Input>
                 </FormGroup>
               </Col>
-
-
-
             </Row>
             <Row>
               <Col>
@@ -115,8 +119,6 @@ export default class ActionTracker extends React.Component {
             </Row>
           </ToastBody>
         </Toast>
-
-
       </Fragment>
     )
   }

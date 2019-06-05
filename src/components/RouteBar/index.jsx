@@ -5,7 +5,8 @@ import {
   Collapse,
   Button,
   Container,
-  Row, Col
+  Row, Col,
+  Toast, ToastHeader, ToastBody
 } from 'reactstrap'
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
 import openSocket from 'socket.io-client';
@@ -36,7 +37,7 @@ export default class RouteBar extends React.Component {
 
       if(newDM){
         newDM = !newDM;
-        socket = openSocket('http://localhost:3001', {query: {type: "DM", name:"Monsters", lobby: dmData.lobby}})
+        socket = openSocket('http://matthewgreenlaw.com:3001', {query: {type: "DM", name:"Monsters", lobby: dmData.lobby}})
         socket.emit('newDM', {
           lobby:dmData.lobby,
           id: socket.id,
@@ -53,7 +54,7 @@ export default class RouteBar extends React.Component {
       //Prevent multiple connections
       if(newPlayer){
         newPlayer = !newPlayer;
-        socket = openSocket('http://localhost:3001', {query: {type: "Player", name: playerData.name, lobby: playerData.lobby}})
+        socket = openSocket('http://matthewgreenlaw.com:3001', {query: {type: "Player", name: playerData.name, lobby: playerData.lobby}})
         socket.emit('newPlayer', {
           lobby: playerData.loby,
           id: socket.id,
@@ -63,8 +64,8 @@ export default class RouteBar extends React.Component {
       return (
           <Container>
             <Row>
-              <Col><InitTracker socket={socket}/></Col>
-              <Col></Col>
+              <Col><InitTracker socket={socket} style={{minHeight: "90%"}}/></Col>
+              <Col><Toast style={{minHeight: "90%"}}><ToastHeader>Combat Log</ToastHeader><ToastBody><i>@todo</i></ToastBody></Toast></Col>
             </Row>
             <Row>
               <Entity

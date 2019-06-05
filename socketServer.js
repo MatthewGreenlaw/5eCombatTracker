@@ -4,14 +4,41 @@ var connections = []
 var targets = ["None"]
 
 function addConnection (data) {
-    connections.push({
-      lobby: data.lobby,
+  var lobby = data.lobby.toString()
+  if(connections[lobby.toString()] === undefined){
+    connections[lobby.toString()] = [{
+      id: data.socket.id,
       type: data.socket.handshake.query.type,
       name: data.socket.handshake.query.name,
-      id: data.socket.id
+    }]
+  }
+  else {
+    connections[data.lobby].push({
+      id: data.socket.id,
+      type: data.socket.handshake.query.type,
+      name: data.socket.handshake.query.name,
     })
+  }
     console.log("New Connection:")
     console.log(connections)
+}
+
+function removeConnection (id) {
+  for (var i in connections){
+    var lobby = connections[i]
+    for (var j in lobby){
+      var connection = lobby[j]
+      if (connection.id === id){
+        lobby.splice(j, 1)
+      }
+      if(connection.length < 1)
+        delete connections[i][j]
+    }
+    if(connections[i].length < 1)
+      delete connections[i]
+  }
+  console.log("Removed Connection:")
+  console.log(connections)
 }
 
 function removeItem(list, socket) {
@@ -26,17 +53,6 @@ function removeItem(list, socket) {
   }
 }
 
-function removeConnection (socket) {
-  for (var i in connections) {
-    if (connections[i].id === socket.id){
-      connections.splice(i, 1);
-      return
-    }
-  }
-  console.log("Removed Connection:")
-  console.log(connections)
-}
-
 io.on('connection', (socket) => {
   var lobby = socket.handshake.query.lobby;
 
@@ -46,13 +62,13 @@ io.on('connection', (socket) => {
   })
 
   socket.join(lobby)
-  socket.emit('addTargets', [socket.handshake.query.name])
 
   socket.on('disconnect', () => {
-    removeItem(connections, socket)
+    removeConnection(socket.id)
     removeItem(targets, socket.handshake.query.name)
 
   })
+  io.to(socket.id).emit('initTargets', connections[lobby])
 
   io.emit('updateInitiative', connections)
 

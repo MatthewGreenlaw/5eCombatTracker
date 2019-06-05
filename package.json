@@ -30,7 +30,7 @@
   "devDependencies": {
     "concurrently": "^3.5.0"
   },
-  "proxy": "https://matthewgreenlaw.com:3001",
+  "proxy": "http://matthewgreenlaw.com:3001",
   "browserslist": {
     "production": [
       ">0.2%",

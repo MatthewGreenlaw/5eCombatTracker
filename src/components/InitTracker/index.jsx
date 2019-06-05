@@ -32,7 +32,6 @@ export default class InitTracker extends React.Component {
   render(){
     var playersRows = [];
     var modifier = 0;
-
     this.socket.on("updateInitiative", player => updateInit(player));
 
     var updateInit = (player) => {
@@ -105,7 +104,7 @@ export default class InitTracker extends React.Component {
           Initiative Tracker
         </ToastHeader>
         <ToastBody>
-          <Table>
+          <Table className={"table-dark table-striped"}>
             <thead>
               <tr>
                 <th>Name</th>

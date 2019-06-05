@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import {
   Row, Col,
   Button,
+  Toast, ToastHeader, ToastBody
 } from 'reactstrap'
 import InitTracker from './../InitTracker'
 import Entity from './../Entity'
@@ -51,8 +52,8 @@ export default class DungeonMaster extends React.Component {
     return (
       <Fragment>
         <Row>
-          <Col><InitTracker name={this.props.name} socket={this.props.socket} players={[]}/></Col>
-          <Col></Col>
+          <Col><InitTracker name={this.props.name} socket={this.props.socket} players={[]} style={{height: "90%"}}/></Col>
+          <Col><Toast style={{minHeight: "90%"}}><ToastHeader>Combat Log</ToastHeader><ToastBody><i>@todo</i></ToastBody></Toast></Col>
         </Row>
         <Row>
           {this.state.monsters}

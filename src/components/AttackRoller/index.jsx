@@ -62,9 +62,11 @@ export default class AttackRoller extends React.Component {
         func = this.rollD20;
       }
     } else if (die.critical) {
+      console.log("Rolling critical with %sd%s", die.n * 2, die.die)
       params = { n: die.n * 2, min: 1, max: die.die, replacement: true };
       func = this.summedValues;
     } else {
+      console.log("Rolling normal with %sd%s", die.n, die.die)
       params = { n: die.n, min: 1, max: die.die, replacement: true };
       func = this.summedValues;
     }
@@ -73,6 +75,7 @@ export default class AttackRoller extends React.Component {
   }
 
   summedValues(die, values) {
+    console.log("SummedValues")
     var sum = values.reduce((result, val) => {
       return result + val;
     });
@@ -111,7 +114,7 @@ export default class AttackRoller extends React.Component {
     var displayAttackRoll = () => {
       return (
         <Fragment>
-          <DiceRemix n={1} mod={0} die={20} mod={die.mod} dice={[20]} res={die.res} callback={diceCallback}/>
+          <DiceRemix n={die.n} mod={die.mod} die={20} mod={die.mod} dice={[20]} res={die.res} callback={diceCallback}/>
           <Button onClick={this.rollDice} block>Attack</Button>
         </Fragment>);
     }
@@ -119,7 +122,7 @@ export default class AttackRoller extends React.Component {
     var displayDamageRoll = () => {
       return (
         <Fragment>
-          <DiceRemix n={1} mod={0} die={4} mod={die.mod} dice={damageDice} res={die.res} callback={diceCallback} critical />
+          <DiceRemix n={die.n} mod={die.mod} die={die.die} mod={die.mod} dice={damageDice} res={die.res} callback={diceCallback} critical />
           <Button onClick={this.rollDice} block>Damage</Button>
         </Fragment>);
     }
@@ -127,7 +130,7 @@ export default class AttackRoller extends React.Component {
     var displayHealRoll = () => {
       return (
         <Fragment>
-          <DiceRemix n={1} mod={0} die={4} mod={die.mod} dice={damageDice} res={die.res} callback={diceCallback} hideType/>
+          <DiceRemix n={die.n} mod={die.mod} die={die.die} mod={die.mod} dice={damageDice} res={die.res} callback={diceCallback} hideType/>
           <Button onClick={this.rollDice} block>Heal</Button>
         </Fragment>);
     }
