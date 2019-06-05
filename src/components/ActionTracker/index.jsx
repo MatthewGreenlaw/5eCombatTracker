@@ -15,15 +15,17 @@ export default class ActionTracker extends React.Component {
     super(props);
     this.socket = this.props.socket
     this.type = this.socket.io.opts.query.type
-
-    if(this.type === "Player")
-      this.name = this.socket.io.opts.query.name
-    else
-      this.name = this.props.name
+    this.name = this.props.name
 
 
     this.socket.on('actionFromServer', (data) => {
-      var log = data.from + ' '+ data.action + 'ed ' + data.to + ' for ' + data.roll
+      var action;
+      if (data.action === 'Damage')
+        action = "damaged"
+      else
+        action = data.action.toLowerCase()+'ed'
+
+      var log = data.player + ' '+ action + ' '+ data.target + ' for ' + data.roll
       this.setState({log})
     })
 
@@ -40,11 +42,11 @@ export default class ActionTracker extends React.Component {
 
     var rollerCallback = (roll) => {
       if(this.state.target.length > 0){
-        this.socket.emit('actionFromPlayer',
+        this.socket.compress(false).emit('actionFromPlayer',
           {
             id: this.socket.id,
-            from: this.name,
-            to: this.state.target,
+            player: this.props.name,
+            target: this.state.target,
             action: this.state.action,
             roll: roll,
           }
@@ -57,12 +59,12 @@ export default class ActionTracker extends React.Component {
 
     var setAction = (option) => {
       var action = option.target.value
-      this.setState({action}, action => console.log("action: %s", this.state.action))
+      this.setState({action})
     }
 
     var setTarget = (option) => {
       var target = option.target.value
-      this.setState({target}, target => console.log("Target: %s", this.state.target))
+      this.setState({target})
     }
 
     var targetOptions = () => {
@@ -96,6 +98,7 @@ export default class ActionTracker extends React.Component {
                     onChange={setTarget}
                     type="select"
                   >
+                  <option value=''>Select a Target</option>
                     {targetOptions()}
 
                   </Input>

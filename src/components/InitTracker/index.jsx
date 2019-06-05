@@ -6,7 +6,7 @@ import {
   Form,
   Button,
   Input, Label,
-  Jumbotron
+  Toast, ToastBody, ToastHeader
 } from 'reactstrap'
 import './styles.css'
 
@@ -69,7 +69,7 @@ export default class InitTracker extends React.Component {
       });
     }
 
-    var displayInitRoll = () => {
+    var displayInitRoller = () => {
       return (
         <Fragment>
         modifier
@@ -100,20 +100,25 @@ export default class InitTracker extends React.Component {
     })
 
     return(
-      <Jumbotron>
-        <Table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Initiative</th>
-            </tr>
-          </thead>
-          <tbody>
-            {playersRows}
-          </tbody>
-        </Table>
-        {displayInitRoll()}
-      </Jumbotron>
+      <Toast>
+        <ToastHeader>
+          Initiative Tracker
+        </ToastHeader>
+        <ToastBody>
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Initiative</th>
+              </tr>
+            </thead>
+            <tbody>
+              {playersRows}
+            </tbody>
+          </Table>
+          {displayInitRoller()}
+        </ToastBody>
+      </Toast>
     )
   }
 }

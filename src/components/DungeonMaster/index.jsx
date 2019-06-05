@@ -42,14 +42,6 @@ export default class DungeonMaster extends React.Component {
     }
   }
 
-  // componentDidMount(){
-  //   var name1, name2;
-  //   randomName(name1)
-  //   randomName(name2)
-  //   var targets = [name1, name2]
-  //   this.setState({targets})
-  // }
-
   render() {
 
     var addMonster = () => {

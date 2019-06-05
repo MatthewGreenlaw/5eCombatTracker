@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
   Jumbotron,
   Navbar, Nav, NavItem, NavbarBrand, NavbarToggler,
@@ -15,6 +15,7 @@ import DiceRoller from './../DiceRoller'
 import Entity from "./../Entity";
 import DungeonMaster from './../DungeonMaster'
 import NewCharacterForm from "./../NewCharacterForm"
+import NewDMForm from "./../NewDMForm"
 import InitTracker from "./../InitTracker"
 import './style.scss'
 
@@ -23,30 +24,49 @@ export default class RouteBar extends React.Component {
   render() {
 
     var playerData;
+    var dmData;
     var newPlayer = true;
+    var newDM = true;
     var socket;
     console.log("Generate")
 
-    function User () {
+    function DM() {
+      if(dmData === undefined)
+        return <Redirect to="/addNewDM"/>;
+
+      if(newDM){
+        newDM = !newDM;
+        socket = openSocket('http://localhost:3001', {query: {type: "DM", name:"Monsters", lobby: dmData.lobby}})
+        socket.emit('newDM', {
+          lobby:dmData.lobby,
+          id: socket.id,
+          name: dmData.name,
+        })
+      }
+      return <Container><DungeonMaster socket={socket}/></Container>
+    }
+
+    function Player () {
       if(playerData === undefined)
         return <Redirect to="/addNewPlayer"/>;
 
       //Prevent multiple connections
       if(newPlayer){
         newPlayer = !newPlayer;
-        socket = openSocket('http://localhost:3001', {query: {type: "Player", name: playerData.name}})
+        socket = openSocket('http://localhost:3001', {query: {type: "Player", name: playerData.name, lobby: playerData.lobby}})
         socket.emit('newPlayer', {
+          lobby: playerData.loby,
           id: socket.id,
           name: playerData.name
         })
       }
       return (
-        <Jumbotron>
-          <Row>
-            <Col xs="2">
-              <InitTracker socket={socket}/>
-            </Col>
-            <Col xs="10">
+          <Container>
+            <Row>
+              <Col><InitTracker socket={socket}/></Col>
+              <Col></Col>
+            </Row>
+            <Row>
               <Entity
                 name={playerData.name}
                 ac={playerData.ac}
@@ -54,30 +74,36 @@ export default class RouteBar extends React.Component {
                 init={playerData.init}
                 socket={socket}
               />
-            </Col>
-          </Row>
-        </Jumbotron>
+            </Row>
+          </Container>
       )
     }
 
-    function callback (data) {
+    function playerDataCallback (data) {
       playerData = data;
       //return <Redirect push to='/player'/>
       document.getElementById('player').click()
     }
 
+    function dmDataCallback (data) {
+      dmData = data;
+      //return <Redirect push to='/player'/>
+      document.getElementById('dungionMaster').click()
+    }
+
+    function addNewDM() {
+      return <Container><NewDMForm callback={dmDataCallback}/></Container>
+    }
+
     function addNewPlayer() {
-      return <Container><p>You are being a player</p><NewCharacterForm callback={callback}/></Container>
+      return <Container><NewCharacterForm callback={playerDataCallback}/></Container>
     }
 
     function dice() {
       return <Container><DiceRoller/></Container>
     }
 
-    function DM() {
-      socket = openSocket('http://localhost:3001', {query: {type: "DM", name: "Monsters"}})
-      return <Container><DungeonMaster socket={socket}/></Container>
-    }
+
     return (
 
       <Router>
@@ -94,10 +120,14 @@ export default class RouteBar extends React.Component {
                 <Link to="/PlayerTracker" id="player" className={"nav-link"}>Player Tracker</Link>
             </NavItem>
             <NavItem>
-                <Link to="/DMTracker" id="dungeonMaster" className={"nav-link"}>DM Tracker</Link>
+                <Link to="/DMTracker" id="dungionMaster" className={"nav-link"}>DM Tracker</Link>
             </NavItem>
           </Nav>
         </Navbar>
+        <Route
+          path="/addNewDM"
+          component={addNewDM}
+        />
         <Route
           path="/addNewPlayer"
           component={addNewPlayer}
@@ -108,7 +138,7 @@ export default class RouteBar extends React.Component {
         />
         <Route
           path="/PlayerTracker"
-          component={User}
+          component={Player}
         />
         <Route
           path="/DMTracker"

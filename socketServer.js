@@ -3,11 +3,12 @@ const port = 3001;
 var connections = []
 var targets = ["None"]
 
-function addConnection (socket) {
+function addConnection (data) {
     connections.push({
-      type: socket.handshake.query.type,
-      name: socket.handshake.query.name,
-      id: socket.id
+      lobby: data.lobby,
+      type: data.socket.handshake.query.type,
+      name: data.socket.handshake.query.name,
+      id: data.socket.id
     })
     console.log("New Connection:")
     console.log(connections)
@@ -37,8 +38,14 @@ function removeConnection (socket) {
 }
 
 io.on('connection', (socket) => {
+  var lobby = socket.handshake.query.lobby;
 
-  addConnection(socket)
+  addConnection({
+    lobby: lobby,
+    socket: socket
+  })
+
+  socket.join(lobby)
   socket.emit('addTargets', [socket.handshake.query.name])
 
   socket.on('disconnect', () => {
@@ -51,16 +58,16 @@ io.on('connection', (socket) => {
 
   socket.on('updateInitiative', (player) => {
     console.log(player.name + " rolled " + player.init + " for initiative")
-    io.emit('updateInitiative', player)
+    io.to(lobby).emit('updateInitiative', player)
   })
 
   socket.on('actionFromPlayer', (data) => {
     console.log(data)
-    console.log(data.from + " " +data.action + "ed " + data.to + " for " + data.roll)
+    console.log(data.player + " " +data.action + "ed " + data.target + " for " + data.roll)
 
-    io.emit('actionFromServer', {
-      from: data.name,
-      to: data.target,
+    io.to(lobby).emit('actionFromServer', {
+      player: data.player,
+      target: data.target,
       action: data.action,
       roll: data.roll
     })
@@ -71,7 +78,7 @@ io.on('connection', (socket) => {
       if(!targets.includes(target))
         targets.push(target)
     })
-    io.emit('updateTargets', targets)
+    io.to(lobby).emit('updateTargets', targets)
   })
 
   socket.on('removeTarget', (target) => {
@@ -80,11 +87,11 @@ io.on('connection', (socket) => {
       if(check = target)
       targets.splice(i, 1)
     }
-    io.emit('updateTargets', targets)
+    io.to(lobby).emit('updateTargets', targets)
   })
 
   socket.on('getPlayers', () => {
-    io.emit('sendPlayers', connections)
+    io.to(lobby).emit('sendPlayers', connections)
   })
 })
 

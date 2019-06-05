@@ -38,7 +38,7 @@ export default class Entity extends React.Component {
                 <HealthTracker character={this.props.name} ac={this.props.ac} max={this.props.maxHP} socket={this.socket}/>
               </Col>
               <Col>
-                <ActionTracker player={this.props.name} socket={this.socket}/>
+                <ActionTracker name={this.props.name} socket={this.socket}/>
               </Col>
             </Row>
           </CardBody>

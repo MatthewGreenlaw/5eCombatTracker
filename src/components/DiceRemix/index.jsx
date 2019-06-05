@@ -174,7 +174,7 @@ export default class Dice extends React.Component {
         <ToastBody>
           <Form inline>
             <FormGroup inline>
-              {this.state.advantage || this.state.disadvantage || this.props.disableN
+              {die === 20 && (this.state.advantage || this.state.disadvantage)
                 ? disableN()
                 : enableN()}
               <Label>

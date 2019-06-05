@@ -17,7 +17,7 @@ export default class Dice extends React.Component {
     n: PropTypes.number,
     die: PropTypes.number,
     mod: PropTypes.number,
-    res: PropTypes.string,
+    res: PropTypes.number,
     advantage: PropTypes.bool,
     disadvantage: PropTypes.bool,
     removable: PropTypes.bool
@@ -109,7 +109,7 @@ export default class Dice extends React.Component {
   }
 
   render() {
-
+    console.log(this.state)
     var setAdvantage = () => {
       this.props.callback(
         {
@@ -200,7 +200,7 @@ export default class Dice extends React.Component {
             <Label check sm={2}>
               <Input
                 type="checkbox"
-                onClick={setCritical}
+                onChange={setCritical}
                 checked={this.state.critical}
                 className={"diceInput"}
               />
@@ -272,7 +272,7 @@ export default class Dice extends React.Component {
         <ToastBody>
           <Form inline>
             <FormGroup inline>
-              {this.state.advantage || this.state.disadvantage
+              {this.state.die === 20 && (this.state.advantage || this.state.disadvantage)
                 ? disableN()
                 : enableN()}
               <Label>
@@ -294,7 +294,6 @@ export default class Dice extends React.Component {
                   placeholder={this.state.mod}
                   className={"diceInput"}
                 />
-              {this.props.hideResult ? null :
                 <Fragment>
                   {" = "}
                   <Input
@@ -304,7 +303,7 @@ export default class Dice extends React.Component {
                     readOnly
                   />
                 </Fragment>
-              }
+
 
               </Label>
             </FormGroup>
