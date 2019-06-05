@@ -9,7 +9,7 @@ import {
   Row,
   Container
 } from 'reactstrap'
-import './styles.css'
+import './styles.scss'
 
 export default class HealthTracker extends React.Component {
   static propTypes = {
@@ -62,25 +62,22 @@ export default class HealthTracker extends React.Component {
 
     return(
       <Toast fade={false}>
-        <ToastHeader>
-          <Container>
-            <Row>
-              <h1>{this.props.character}</h1>
-            </Row>
-            <Row>
-             {"AC: "}{this.props.ac}
-            </Row>
-          </Container>
-        </ToastHeader>
         <ToastBody>
           <Table>
+            <thead>
+              <tr>
+                <th>Health</th>
+                <th></th>
+              </tr>
+            </thead>
             <tbody>
+              <tr>
+                <td>Current HP</td>
+                <td>{this.state.current}</td>
+              </tr>
               <tr>
                 <td>Max HP</td>
                 <td>{this.props.max}</td>
-              </tr><tr>
-                <td>Current HP</td>
-                <td>{this.state.current}</td>
               </tr>
               <tr>
                 <td>Temp HP</td>
