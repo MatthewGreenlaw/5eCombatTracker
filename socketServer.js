@@ -1,8 +1,7 @@
 const io = require('socket.io')()
 const port = 3001;
 var connections = []
-var players = []
-var enemies = []
+var targets = []
 
 function addConnection (socket) {
     connections.push({
@@ -39,22 +38,36 @@ function removeConnection (socket) {
 
 io.on('connection', (socket) => {
   addConnection(socket)
-  io.emit('playerJoin', players)
+  socket.emit('addTargets', [socket.handshake.query.name])
+
+  io.emit('updateInitiative', connections)
+
   socket.on('disconnect', () => {
     removeEntity(connections, socket)
   })
 
   socket.on('updateInitiative', (player) => {
+    console.log(player.name + " rolled " + player.init + " for initiative")
     io.emit('updateInitiative', player)
   })
-  
+
   socket.on('actionFromPlayer', (data) => {
+    console.log(data.name + " " +data.action + "ed " + data.to + " for " + data.roll)
+
     io.emit('actionFromServer', {
       from: data.name,
       to: data.target,
       action: data.action,
       roll: data.roll
     })
+  })
+
+  socket.on('addTargets', (_targets) => {
+    _targets.forEach((target) => {
+      if(!targets.includes(target))
+        targets.push(target)
+    })
+    io.emit('updateTargets', targets)
   })
 
   socket.on('getPlayers', () => {
