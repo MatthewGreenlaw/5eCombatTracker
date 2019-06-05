@@ -20,8 +20,6 @@ export default class InitTracker extends React.Component {
     this.socket = this.props.socket
     this.name = this.socket.io.opts.query.name
 
-
-
     this.state = {
       players: this.props.players.sort((a, b) => {return b.init - a.init}),
       init: null,

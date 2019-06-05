@@ -47,7 +47,11 @@ io.on('connection', (socket) => {
   socket.on('updateInitiative', (player) => {
     io.emit('updateInitiative', player)
   })
-  
+
+  socket.on('logFromServer', (log) => {
+    io.emit('logFromServer', log)
+  })
+
   socket.on('actionFromPlayer', (data) => {
     io.emit('actionFromServer', {
       from: data.name,

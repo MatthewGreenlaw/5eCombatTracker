@@ -7,7 +7,6 @@ import './styles.css'
 
 export default class CombatLog extends React.Component {
   static propTypes = {
-    log: Proptypes.object,
     socket: PropTypes.object
   }
 
@@ -16,7 +15,7 @@ export default class CombatLog extends React.Component {
     this.socket = this.props.socket;
 
     this.state = {
-       log: this.props.log;
+       log: 'Welcome'
     }
   }
   render(){

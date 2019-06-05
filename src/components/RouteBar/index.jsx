@@ -5,6 +5,7 @@ import {
 } from 'reactstrap'
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
 import openSocket from 'socket.io-client';
+import Player from './../Player';
 
 
 import DiceRoller from './../DiceRoller'
@@ -33,13 +34,7 @@ export default class RouteBar extends React.Component {
           name: playerData.name
         })
       }
-      return <Jumbotron><Entity
-        name={playerData.name}
-        ac={playerData.ac}
-        maxHP={playerData.maxHP}
-        init={playerData.init}
-        socket={socket}
-      /></Jumbotron>
+      return <Player socket={socket} player={playerData}/>
     }
 
     function callback (data) {
