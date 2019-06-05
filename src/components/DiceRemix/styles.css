@@ -1,0 +1,12 @@
+/* Dice */
+.toast.dice {
+	max-width: 100% !important;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+input.form-control.diceInput, select.form-control.diceInput {
+	margin-left: 1em !important;
+	margin-right: 1em !important;
+	width: 5em;
+}
