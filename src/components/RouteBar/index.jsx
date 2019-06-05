@@ -121,7 +121,7 @@ export default class RouteBar extends React.Component {
             <BannerImage src={Doorway} height={.3}>
               <BannerHeader> D&D Combat Tracker </BannerHeader>
             </BannerImage>
-            <Content title={"Let me tell you about myself..."}  height={.7}>
+            <Content title={"Welcome to the dungeon..."}  height={.7}>
               <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
               <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
               <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
@@ -131,7 +131,7 @@ export default class RouteBar extends React.Component {
           <BannerImage src={Dungeon} height={.3}>
             <BannerHeader> Upcoming Events </BannerHeader>
           </BannerImage>
-          <Content title={"Let me tell you about myself..."}  height={.7}>
+          <Content title={"Meet the Devs"}  height={.7}>
             <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
             <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
             <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
