@@ -1,7 +1,7 @@
 {
   "name": "5e_combat_tracker",
   "version": "1.0.0",
-  "homepage": "https://matthewgreenlaw.github.io/5eCombatTracker/",
+  "homepage": "http://5ecombattracker.matthewgreenlaw.com/",
   "scripts": {
     "start": "concurrently --kill-others-on-fail \"nodemon socketServer.js\" \"react-scripts start\"",
     "build": "react-scripts build",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "concurrently": "^3.5.0"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "https://matthewgreenlaw.com:3001",
   "browserslist": {
     "production": [
       ">0.2%",
