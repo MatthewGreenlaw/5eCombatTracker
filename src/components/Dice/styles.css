@@ -1,22 +1,12 @@
-
-
-/*.symbol-lg {
-	font-size: 1.5em;
-}*/
-
-.toast {
+/* Dice */
+.toast.dice {
 	max-width: 100% !important;
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
 
-.width-sm, input.form-control, select.form-control {
+input.form-control.diceInput, select.form-control.diceInput {
 	margin-left: 1em !important;
 	margin-right: 1em !important;
+	width: 5em;
 }
-
-/*input.form-control[readonly] {
-	min-width: 24ch !important;
-	margin-left: 1em !important;
-	margin-right: 1em !important;
-}*/

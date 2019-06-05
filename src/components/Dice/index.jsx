@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 import {
   Toast,
@@ -32,6 +32,7 @@ export default class Dice extends React.Component {
       nth: this.props.nth,
       n: this.props.n,
       die: this.props.die,
+      dice: this.props.dice === undefined ? [2, 4, 6, 8, 10, 12, 20] : this.props.dice,
       mod: this.props.mod,
       res: this.props.res,
       advantage: false,
@@ -41,8 +42,8 @@ export default class Dice extends React.Component {
     };
   }
 
-  async setN(n) {
-    await this.setState({ n: n, res: 0 });
+  setN(n) {
+    this.setState({ n: n, res: 0 });
 
     this.props.callback(
       {
@@ -60,8 +61,8 @@ export default class Dice extends React.Component {
     );
   }
 
-  async setDie(die) {
-    await this.setState({ die: die, res: 0 });
+  setDie(die) {
+    this.setState({ die: die, res: 0 });
     this.props.callback(
       {
         nth: this.state.nth,
@@ -71,15 +72,15 @@ export default class Dice extends React.Component {
         res: 0,
         advantage: this.state.advantage,
         disadvantage: this.state.disadvantage,
-        critical: this.statecritical,
+        critical: this.state.critical,
         hidden: this.state.hidden
       },
       false
     );
   }
 
-  async setMod(mod) {
-    await this.setState({ mod, res: 0 });
+  setMod(mod) {
+    this.setState({ mod, res: 0 });
     this.props.callback(
       {
         nth: this.state.nth,
@@ -96,8 +97,8 @@ export default class Dice extends React.Component {
     );
   }
 
-  async hide() {
-    await this.setState({ hidden: true });
+  hide() {
+    this.setState({ hidden: true });
     this.props.callback(
       {
         nth: this.state.nth,
@@ -108,6 +109,7 @@ export default class Dice extends React.Component {
   }
 
   render() {
+
     var setAdvantage = () => {
       this.props.callback(
         {
@@ -171,6 +173,7 @@ export default class Dice extends React.Component {
                 type="checkbox"
                 onChange={setAdvantage}
                 checked={this.state.advantage}
+                className={"diceInput"}
               />{" "}
               Advantage{" "}
             </Label>
@@ -181,6 +184,7 @@ export default class Dice extends React.Component {
                 type="checkbox"
                 onChange={setDisadvantage}
                 checked={this.state.disadvantage}
+                className={"diceInput"}
               />{" "}
               Disadvantage{" "}
             </Label>
@@ -198,6 +202,7 @@ export default class Dice extends React.Component {
                 type="checkbox"
                 onClick={setCritical}
                 checked={this.state.critical}
+                className={"diceInput"}
               />
               Critical
             </Label>
@@ -207,7 +212,7 @@ export default class Dice extends React.Component {
     };
 
     var dieType = () => {
-      return this.state.die === 20 ? attackDie() : criticalDie();
+        return this.state.die === 20 ? attackDie() : criticalDie();
     };
 
     var enableN = () => {
@@ -217,6 +222,7 @@ export default class Dice extends React.Component {
             type="number"
             onChange={e => this.setN(+e.target.value)}
             placeholder={this.state.n}
+            className={"diceInput"}
           />
           {" d "}
         </Label>
@@ -227,24 +233,42 @@ export default class Dice extends React.Component {
       if(this.state.advantage && this.state.disadvantage){
         return (
           <Label>
-            <Input type="number" value={1} className={"width-sm"} readOnly />
+            <Input
+              type="number"
+              value={1}
+              className={"diceInput"}
+              readOnly
+            />
             {" d "}
           </Label>
         );
       }
       return (
         <Label>
-          <Input type="number" value={2} className={"width-sm"} readOnly />
+          <Input
+            type="number"
+            value={2}
+            className={"diceInput"}
+            readOnly
+          />
           {" d "}
         </Label>
       );
     };
 
+    var diceOptions = () => {
+      var dice = this.state.dice
+      return dice.map((die, i) => {return <option key={i}>{die}</option>})
+    }
+
     return (
-      <Toast fade={false}>
-        <ToastHeader toggle={this.props.removable ? this.hide : null}>
-          {dieType()}
-        </ToastHeader>
+      <Toast fade={false} className={"dice"}>
+        {this.props.hideType ? null :
+           <ToastHeader toggle={this.props.removable ? this.hide : null}>
+            {dieType()}
+          </ToastHeader>
+        }
+
         <ToastBody>
           <Form inline>
             <FormGroup inline>
@@ -257,12 +281,9 @@ export default class Dice extends React.Component {
                   onChange={e => this.setDie(+e.target.value)}
                   placeholder={this.state.die}
                   defaultValue={20}
+                  className={"diceInput"}
                 >
-                  <option>4</option>
-                  <option>6</option>
-                  <option>8</option>
-                  <option>10</option>
-                  <option>20</option>
+                  {diceOptions()}
                 </Input>
                 {" + "}
               </Label>
@@ -271,9 +292,20 @@ export default class Dice extends React.Component {
                   type="number"
                   onChange={e => this.setMod(+e.target.value)}
                   placeholder={this.state.mod}
+                  className={"diceInput"}
                 />
-                {" = "}
-                <Input type="text" value={this.props.res} readOnly />
+              {this.props.hideResult ? null :
+                <Fragment>
+                  {" = "}
+                  <Input
+                    type="text"
+                    value={this.props.res}
+                    className={"diceInput"}
+                    readOnly
+                  />
+                </Fragment>
+              }
+
               </Label>
             </FormGroup>
           </Form>
