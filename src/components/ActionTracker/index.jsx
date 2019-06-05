@@ -5,6 +5,7 @@ import {
   Col, Row,
   Toast, ToastHeader, ToastBody,
   Card, CardHeader, CardBody,
+  FormGroup,
 } from 'reactstrap'
 
 import AttackRoller from './../AttackRoller'
@@ -22,7 +23,7 @@ export default class ActionTracker extends React.Component {
 
 
     this.socket.on('actionFromServer', (data) => {
-      var log = 'Log: ' + data.from + ' '+ data.action + 'ed ' + data.to + ' for ' + data.roll
+      var log = data.from + ' '+ data.action + 'ed ' + data.to + ' for ' + data.roll
       this.setState({log})
     })
 
@@ -42,8 +43,8 @@ export default class ActionTracker extends React.Component {
         this.socket.emit('actionFromPlayer',
           {
             id: this.socket.id,
-            name: this.name,
-            target: this.state.target,
+            from: this.name,
+            to: this.state.target,
             action: this.state.action,
             roll: roll,
           }
@@ -54,9 +55,14 @@ export default class ActionTracker extends React.Component {
       }
     }
 
-    var setAction = (action) => {
-      action = action.target.value
-      this.setState({action})
+    var setAction = (option) => {
+      var action = option.target.value
+      this.setState({action}, action => console.log("action: %s", this.state.action))
+    }
+
+    var setTarget = (option) => {
+      var target = option.target.value
+      this.setState({target}, target => console.log("Target: %s", this.state.target))
     }
 
     var targetOptions = () => {
@@ -64,39 +70,50 @@ export default class ActionTracker extends React.Component {
     }
     return (
       <Fragment>
-        <Row>
-          <Label>
-            Action
-            <Input
-              onChange={setAction}
-              type="select"
-              placeholder={"Attack"}
-              style={{marginLeft: "0px"}}
-            >
-              <option>Attack</option>
-              <option>Damage</option>
-              <option>Heal</option>
-            </Input>
-          </Label>
 
-          <Label style={{marginLeft:"1em"}}>
-            Target
-            <Input
-              onChange={(option) => {this.setState({target: option.target.value})}}
-              type="select"
-              placeholder={"activeEntities"}
-              style={{marginLeft: "0px"}}
-            >
-              {targetOptions()}
+        <Toast>
+          <ToastHeader>{"Log: " + (this.state.log === undefined ? 'Welcome' : this.state.log)}</ToastHeader>
+          <ToastBody>
+            <Row form>
+              <Col md={5}>
+                <FormGroup>
+                  <Label>Action</Label>
+                  <Input
+                    onChange={setAction}
+                    type="select"
+                    placeholder={"Attack"}
+                  >
+                    <option>Attack</option>
+                    <option>Damage</option>
+                    <option>Heal</option>
+                  </Input>
+                </FormGroup>
+              </Col>
+              <Col md={5}>
+                <FormGroup>
+                  <Label> Target </Label>
+                  <Input
+                    onChange={setTarget}
+                    type="select"
+                  >
+                    {targetOptions()}
 
-            </Input>
-          </Label>
-        </Row>
-        <Row>
-          <Col>
-            {this.state.target.length > 0 ? <AttackRoller rollerCallback={rollerCallback} action={this.state.action}/> : null}
-          </Col>
-        </Row>
+                  </Input>
+                </FormGroup>
+              </Col>
+
+
+
+            </Row>
+            <Row>
+              <Col>
+                {this.state.target.length > 0 ? <AttackRoller rollerCallback={rollerCallback} action={this.state.action}/> : null}
+              </Col>
+            </Row>
+          </ToastBody>
+        </Toast>
+
+
       </Fragment>
     )
   }

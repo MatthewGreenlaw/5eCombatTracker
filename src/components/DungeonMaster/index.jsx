@@ -6,7 +6,7 @@ import {
 } from 'reactstrap'
 import InitTracker from './../InitTracker'
 import Entity from './../Entity'
-
+import {randomName} from './../utils/randomNameGenerator'
 
 export default class DungeonMaster extends React.Component {
   static propTypes = {
@@ -41,6 +41,14 @@ export default class DungeonMaster extends React.Component {
       targets: ["Monster 1", "Monster 2"],
     }
   }
+
+  // componentDidMount(){
+  //   var name1, name2;
+  //   randomName(name1)
+  //   randomName(name2)
+  //   var targets = [name1, name2]
+  //   this.setState({targets})
+  // }
 
   render() {
 

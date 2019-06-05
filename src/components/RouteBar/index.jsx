@@ -44,7 +44,7 @@ export default class RouteBar extends React.Component {
         <Jumbotron>
           <Row>
             <Col xs="2">
-              <InitTracker socket={socket} players={[{id: 1, name: "test1", init: 1}, {id: 2, name: "test2", init: 2}]}/>
+              <InitTracker socket={socket}/>
             </Col>
             <Col xs="10">
               <Entity

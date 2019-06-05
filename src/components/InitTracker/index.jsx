@@ -6,6 +6,7 @@ import {
   Form,
   Button,
   Input, Label,
+  Jumbotron
 } from 'reactstrap'
 import './styles.css'
 
@@ -23,7 +24,7 @@ export default class InitTracker extends React.Component {
 
 
     this.state = {
-      players: this.props.players.sort((a, b) => {return b.init - a.init}),
+      players: [],//this.props.players.sort((a, b) => {return b.init - a.init}),
       init: null,
     };
   }
@@ -31,6 +32,24 @@ export default class InitTracker extends React.Component {
   render(){
     var playersRows = [];
     var modifier = 0;
+
+    this.socket.on("updateInitiative", player => updateInit(player));
+
+    var updateInit = (player) => {
+      var players = this.state.players
+      for (var i in players) {
+        var _player = players[i]
+        if(player.id === _player.id){
+          players[i].init = player.init
+          players = players.sort((a, b) => {return b.init - a.init})
+          this.setState({players})
+          return
+        }
+      }
+      players.push(player)
+      players = players.sort((a, b) => {return b.init - a.init})
+      this.setState({players})
+    }
 
     var rollInit = () => {
       console.log("InitRoller")
@@ -71,24 +90,7 @@ export default class InitTracker extends React.Component {
       )
     }
 
-    var updateInit = (player) => {
-      var players = this.state.players
-      for (var i in players) {
-        var _player = players[i]
-        if(player.id === _player.id){
-          players[i].init = player.init
-          players = players.sort((a, b) => {return b.init - a.init})
-          this.setState({players})
-          return
-        }
-      }
-      players.push(player)
-      players = players.sort((a, b) => {return b.init - a.init})
-      this.setState({players})
-    }
-    this.socket.on("updateInitiative", player => updateInit(player));
-
-    this.props.players.forEach((player, i)=>{
+    this.state.players.forEach((player, i)=>{
       playersRows.push(
         <tr key={i}>
           <td>{player.name}</td>
@@ -98,7 +100,7 @@ export default class InitTracker extends React.Component {
     })
 
     return(
-      <Fragment>
+      <Jumbotron>
         <Table>
           <thead>
             <tr>
@@ -111,7 +113,7 @@ export default class InitTracker extends React.Component {
           </tbody>
         </Table>
         {displayInitRoll()}
-      </Fragment>
+      </Jumbotron>
     )
   }
 }

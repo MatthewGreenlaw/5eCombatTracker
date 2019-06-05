@@ -16,12 +16,14 @@ export default class Entity extends React.Component {
   }
 
   componentDidMount () {
+    console.log("Adding %s", this.props.name)
     this.socket.emit("addTargets", [this.props.name])
   }
 
-  componentWillUnmount() {
-
-  }
+  // componentWillUnmount() {
+  //   console.log("Removing %s", this.props.name)
+  //   this.socket.emit("removeTarget", this.props.name)
+  // }
 
   render(){
     return (

@@ -38,8 +38,6 @@ export default class AttackRoller extends React.Component {
   }
 
   roll(func, params, die) {
-    console.log("Rolling:")
-    console.log(params)
     generateIntegers(
       func.bind(null, die), //curry: https://javascript.info/currying-partials
       params
@@ -49,21 +47,16 @@ export default class AttackRoller extends React.Component {
   rollDice() {
     var die = this.state.die
     var func, params;
-    console.log("Die")
-    console.log(die)
     if (die.die === 20) {
       if (die.advantage && !die.disadvantage) {
         params = { n: 2, min: 1, max: 20, replacement: true };
         func = this.rollAdvantage;
-        console.log("rollAdvantage")
       } else if (die.disadvantage && !die.advantage) {
         params = { n: 2, min: 1, max: 20, replacement: true };
         func = this.rollDisadvantage;
       } else {
         params = { n: die.n, min: 1, max: 20, replacement: true };
         func = this.rollD20;
-
-        console.log("rollD20")
       }
     } else if (die.critical) {
       params = { n: die.n * 2, min: 1, max: die.die, replacement: true };
