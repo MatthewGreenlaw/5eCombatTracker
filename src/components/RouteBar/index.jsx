@@ -1,7 +1,11 @@
 import React from 'react';
 import {
   Jumbotron,
-  Navbar, Nav, NavItem, NavbarBrand
+  Navbar, Nav, NavItem, NavbarBrand, NavbarToggler,
+  Collapse,
+  Button,
+  Container,
+  Row, Col
 } from 'reactstrap'
 import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
 import openSocket from 'socket.io-client';
@@ -9,7 +13,10 @@ import openSocket from 'socket.io-client';
 
 import DiceRoller from './../DiceRoller'
 import Entity from "./../Entity";
+import DungeonMaster from './../DungeonMaster'
 import NewCharacterForm from "./../NewCharacterForm"
+import InitTracker from "./../InitTracker"
+import './style.scss'
 
 export default class RouteBar extends React.Component {
 
@@ -33,13 +40,24 @@ export default class RouteBar extends React.Component {
           name: playerData.name
         })
       }
-      return <Jumbotron><Entity
-        name={playerData.name}
-        ac={playerData.ac}
-        maxHP={playerData.maxHP}
-        init={playerData.init}
-        socket={socket}
-      /></Jumbotron>
+      return (
+        <Jumbotron>
+          <Row>
+            <Col xs="2">
+              <InitTracker socket={socket} players={[{id: 1, name: "test1", init: 1}, {id: 2, name: "test2", init: 2}]}/>
+            </Col>
+            <Col xs="10">
+              <Entity
+                name={playerData.name}
+                ac={playerData.ac}
+                maxHP={playerData.maxHP}
+                init={playerData.init}
+                socket={socket}
+              />
+            </Col>
+          </Row>
+        </Jumbotron>
+      )
     }
 
     function callback (data) {
@@ -49,25 +67,34 @@ export default class RouteBar extends React.Component {
     }
 
     function addNewPlayer() {
-      console.log("here")
-
-      return <NewCharacterForm callback={callback}/>
+      return <Container><p>You are being a player</p><NewCharacterForm callback={callback}/></Container>
     }
 
+    function dice() {
+      return <Container><DiceRoller/></Container>
+    }
+
+    function DM() {
+      socket = openSocket('http://localhost:3001', {query: {type: "DM", name: "Monsters"}})
+      return <Container><DungeonMaster socket={socket}/></Container>
+    }
     return (
 
       <Router>
-        <Navbar>
+        <Navbar className={"navbar-dark bg-dark sticky-top"}>
           <NavbarBrand>Combat Tracker</NavbarBrand>
           <Nav>
             <NavItem>
-              <Link to="/">Home</Link>
+                <Link to="/" className={"nav-link"}>Home</Link>
             </NavItem>
             <NavItem>
-              <Link to="/roller/">Dice Roller</Link>
+                <Link to="/roller/" className={"nav-link"}>Dice Roller</Link>
             </NavItem>
             <NavItem>
-              <Link to="/player" id="player">Player Area</Link>
+                <Link to="/PlayerTracker" id="player" className={"nav-link"}>Player Tracker</Link>
+            </NavItem>
+            <NavItem>
+                <Link to="/DMTracker" id="dungeonMaster" className={"nav-link"}>DM Tracker</Link>
             </NavItem>
           </Nav>
         </Navbar>
@@ -77,11 +104,15 @@ export default class RouteBar extends React.Component {
         />
         <Route
           path="/roller"
-          component={DiceRoller}
+          component={dice}
         />
         <Route
-          path="/player"
+          path="/PlayerTracker"
           component={User}
+        />
+        <Route
+          path="/DMTracker"
+          component={DM}
         />
       </Router>
 
