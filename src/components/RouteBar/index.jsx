@@ -8,10 +8,14 @@ import {
   Row, Col,
   Toast, ToastHeader, ToastBody
 } from 'reactstrap'
-import { BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
 import openSocket from 'socket.io-client';
 
-
+import {
+  BannerImage,
+  BannerHeader,
+  Content,
+} from './../Parallax/ParallaxComponents'
 import DiceRoller from './../DiceRoller'
 import Entity from "./../Entity";
 import DungeonMaster from './../DungeonMaster'
@@ -19,6 +23,8 @@ import NewCharacterForm from "./../NewCharacterForm"
 import NewDMForm from "./../NewDMForm"
 import InitTracker from "./../InitTracker"
 import './style.scss'
+import Doorway from './../../images/283686.jpg'
+import Dungeon from './../../images/dungeon.jpg'
 
 export default class RouteBar extends React.Component {
 
@@ -104,7 +110,38 @@ export default class RouteBar extends React.Component {
       return <Container><DiceRoller/></Container>
     }
 
+    function redirectToLanding () {
+      return <Redirect to="/landing"/>;
+    }
 
+    function landing () {
+      return (
+        <Fragment>
+          <div id={"about"}>
+            <BannerImage src={Doorway} height={.3}>
+              <BannerHeader> D&D Combat Tracker </BannerHeader>
+            </BannerImage>
+            <Content title={"Let me tell you about myself..."}  height={.7}>
+              <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+              <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+              <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+            </Content>
+          </div>
+        <div id={"about"}>
+          <BannerImage src={Dungeon} height={.3}>
+            <BannerHeader> Upcoming Events </BannerHeader>
+          </BannerImage>
+          <Content title={"Let me tell you about myself..."}  height={.7}>
+            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+          </Content>
+        </div>
+
+      </Fragment>
+      )
+    }
     return (
 
       <Router>
@@ -112,7 +149,7 @@ export default class RouteBar extends React.Component {
           <NavbarBrand>Combat Tracker</NavbarBrand>
           <Nav>
             <NavItem>
-                <Link to="/" className={"nav-link"}>Home</Link>
+                <Link to="/landing" className={"nav-link"}>Home</Link>
             </NavItem>
             <NavItem>
                 <Link to="/roller/" className={"nav-link"}>Dice Roller</Link>
@@ -125,26 +162,33 @@ export default class RouteBar extends React.Component {
             </NavItem>
           </Nav>
         </Navbar>
-        <Route
-          path="/addNewDM"
-          component={addNewDM}
-        />
-        <Route
-          path="/addNewPlayer"
-          component={addNewPlayer}
-        />
-        <Route
-          path="/roller"
-          component={dice}
-        />
-        <Route
-          path="/PlayerTracker"
-          component={Player}
-        />
-        <Route
-          path="/DMTracker"
-          component={DM}
-        />
+        <Switch>
+
+          <Route
+            path="/addNewDM"
+            component={addNewDM}
+          />
+          <Route
+            path="/addNewPlayer"
+            component={addNewPlayer}
+          />
+          <Route
+            path="/roller"
+            component={dice}
+          />
+          <Route
+            path="/PlayerTracker"
+            component={Player}
+          />
+          <Route
+            path="/DMTracker"
+            component={DM}
+          />
+          <Route
+            path="*"
+            component={landing}
+          />
+        </Switch>
       </Router>
 
     )
