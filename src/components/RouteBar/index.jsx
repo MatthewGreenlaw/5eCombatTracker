@@ -117,25 +117,33 @@ export default class RouteBar extends React.Component {
     function landing () {
       return (
         <Fragment>
-          <div id={"about"}>
+          <div>
             <BannerImage src={Doorway} height={.3}>
               <BannerHeader> D&D Combat Tracker </BannerHeader>
             </BannerImage>
             <Content title={"Welcome to the dungeon..."}  height={.7}>
-              <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
-              <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
-              <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+              <Toast style={{width: "100%"}}><ToastHeader>Join A Game!</ToastHeader><ToastBody>Get your DM's ID and and join their game as a <Link to="/PlayerTracker" id="player">player</Link>.</ToastBody></Toast>
+              <Toast style={{width: "100%"}}><ToastHeader>Start A Game</ToastHeader><ToastBody>Get your friends together to play a game. All you have to do is give them your DM ID and start <Link to="/DMTracker" id="player">DMing</Link>.</ToastBody></Toast>
+              <Toast style={{width: "100%"}}><ToastHeader>Need some dice?</ToastHeader><ToastBody>Don't forget about our luxurious <Link to="/roller/">dice roller</Link>.</ToastBody></Toast>
             </Content>
           </div>
-        <div id={"about"}>
+        <div>
           <BannerImage src={Dungeon} height={.3}>
-            <BannerHeader> Upcoming Events </BannerHeader>
+            <BannerHeader> Credits & Project Information</BannerHeader>
           </BannerImage>
           <Content title={"Meet the Devs"}  height={.7}>
-            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
-            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
-            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
-            <Toast style={{width: "100%"}}><ToastHeader>Stuff in here</ToastHeader><ToastBody>This is the stuff I'm talking about</ToastBody></Toast>
+            <Row>
+              <Col>
+                <Toast style={{width: "100%"}}><ToastHeader>Matthew Greenlaw</ToastHeader><ToastBody>Check out <a href={'https://matthewgreenlaw.github.io/portfolio/'} target={"_Blank"}>Matt's portfolio</a></ToastBody></Toast>
+                <Toast style={{width: "100%"}}><ToastHeader>Theron Anderson</ToastHeader><ToastBody>Check out <a href={'https://atheron80.github.io/'} target={"_Blank"}>Theron's portfolio</a></ToastBody></Toast>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Toast style={{width: "100%"}}><ToastHeader>This project is open source!</ToastHeader><ToastBody>Interested in contributing to the project? Want to make your own rip off? Check it out on <a href={'https://github.com/MatthewGreenlaw/5eCombatTracker'} target={"_Blank"}>GitHub</a>.</ToastBody></Toast>
+                <Toast style={{width: "100%"}}><ToastHeader>Found a bug?</ToastHeader><ToastBody>Something isn't working? Did Grog get hit for way too much damage? Dice roller not rolling the rite dice? Start an <a href={'https://github.com/MatthewGreenlaw/5eCombatTracker/issues'} target={"_Blank"}>issue</a>.</ToastBody></Toast>
+              </Col>
+            </Row>
           </Content>
         </div>
 

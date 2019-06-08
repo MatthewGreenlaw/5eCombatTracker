@@ -13,7 +13,7 @@ export default class NewCharacterForm extends React.Component {
   }
 
   render() {
-    var name, ac, maxHP, lobby;
+    var name, ac, maxHP;
 
     var filledAllFields = () => {
       if (name === undefined ||
