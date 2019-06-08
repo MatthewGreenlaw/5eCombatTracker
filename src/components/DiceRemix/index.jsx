@@ -41,7 +41,6 @@ export default class Dice extends React.Component {
     var mod = this.props.mod === undefined ? 0 : this.props.mod
     var res = this.props.res === undefined ? 0 : this.props.res
     var hidden = this.props.hidden === undefined ? false : this.props.hidden
-    console.log("DiceRemix.render: %s", mod)
 
     var updateParent = () => {
       this.props.callback({

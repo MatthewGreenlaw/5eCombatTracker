@@ -7,6 +7,8 @@ import {
 } from 'reactstrap'
 import InitTracker from './../InitTracker'
 import Entity from './../Entity'
+import Log from './../Log'
+import NewMonsterForm from "./../NewMonsterForm"
 
 export default class DungeonMaster extends React.Component {
   static propTypes = {
@@ -20,42 +22,45 @@ export default class DungeonMaster extends React.Component {
     this.name = this.socket.io.opts.query.name
 
     this.state = {
-      monsters: [//hard coding for now...
-        <Entity
-          key={1}
-          name={"Monster 1"}
-          ac={18}
-          maxHP={40}
-          init={-1}
-          socket={this.socket}
-        />,
-        <Entity
-          key={2}
-          name={"Monster 2"}
-          ac={12}
-          maxHP={35}
-          init={2}
-          socket={this.socket}
-        />,
-      ],
-      targets: ["Monster 1", "Monster 2"],
+      addingMonsters: false,
+      monsters: [],
+      targets: [],
     }
   }
 
   render() {
-
     var addMonster = () => {
-      this.socket.emit("addTargets", this.state.targets)
+      var addingMonsters = !this.state.addingMonsters
+      this.setState({addingMonsters})
+    }
+
+    var newMonsterCallback = (data) => {
+      var monsters = this.state.monsters
+      var newMonster = <Entity
+        name={data.name}
+        ac={data.ac}
+        maxHP={data.maxHP}
+        socket={this.props.socket}
+      />
+
+    monsters.push(newMonster);
+    this.setState({
+      addingMonsters: !this.state.addingMonsters,
+      monsters: monsters
+    })
+
     }
 
     return (
       <Fragment>
         <Row>
           <Col><InitTracker name={this.props.name} socket={this.props.socket} players={[]} style={{height: "90%"}}/></Col>
-          <Col><Toast style={{minHeight: "90%"}}><ToastHeader>Combat Log</ToastHeader><ToastBody><i>@todo</i></ToastBody></Toast></Col>
+          <Col><Toast style={{minHeight: "90%"}}><ToastHeader>Combat Log</ToastHeader><ToastBody>
+            <Log socket={this.props.socket}/>
+          </ToastBody></Toast></Col>
         </Row>
         <Row>
-          {this.state.monsters}
+          {this.state.addingMonsters ? <NewMonsterForm lobby={this.socket.query.lobby} callback={newMonsterCallback}/> : this.state.monsters}
           <Button onClick={addMonster} block={true}>+ Add monster</Button>
         </Row>
       </Fragment>

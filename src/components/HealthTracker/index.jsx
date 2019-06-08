@@ -25,17 +25,29 @@ export default class HealthTracker extends React.Component {
     };
 
     this.props.socket.on("recieveDamage", (damage) => {
-      console.log(damage)
-      if(this.props.name === damage.name)
-        this.updateDamage(this.state.damage + damage.roll)
+      if(this.props.name === damage.name){
+          var newDamage = this.state.damage + damage.roll
+          if (newDamage > this.props.max * 2)
+            newDamage = this.props.max
+        this.updateDamage(newDamage)
+      }
     });
 
-    this.props.socket.on("recieveHeal", healing => this.updateDamage(this.state.damage - healing));
+    this.props.socket.on("recieveHeal", (healing) => {
+      if(this.props.name === healing.name){
+        var newDamage = this.state.damage - healing.roll
+        if (newDamage < 0 )
+          newDamage = 0
+        this.updateDamage(newDamage)
+      }
+    });
   }
 
   updateDamage = (damage) => {
     if (damage  < 0)
       damage = 0
+
+
     this.setState({
       current: +this.props.max + this.state.temp - (damage),
       damage: damage

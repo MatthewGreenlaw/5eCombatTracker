@@ -66,12 +66,14 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     removeTarget(lobby, socket.id)
     removeConnection(lobby, socket.id)
+    io.to(lobby).emit('logAction', socket.handshake.query.name + " left the game")
     io.to(lobby).emit('targetUpdate', targets[lobby])
   })
 
   socket.on('updateInitiative', (player) => {
     console.log(player.name + " rolled " + player.init + " for initiative")
     updateInitiative(lobby, player.id, player.init)
+    io.to(lobby).emit('logAction', player.name + " rolled " + player.init + " initiative.")
     io.to(lobby).emit('initiativeUpdate', connections[lobby])
   })
 
@@ -79,16 +81,16 @@ io.on('connection', (socket) => {
     console.log(data.source.name + " " +data.action + "ed " + data.target.name + " for " + data.roll)
     console.log(data)
 
+    var action;
+    if (data.action === 'Damage')
+      action = "damaged"
+    else
+      action = data.action.toLowerCase()+'ed'
 
-    io.to(lobby).emit('logAction', {
-      source: data.source.name,
-      target: data.target.name,
-      action: data.action,
-      roll: data.roll
-    })
+    var log = data.source.name + ' '+ action + ' '+ data.target.name + ' for ' + data.roll
+    io.to(lobby).emit('logAction',log)
 
     var emitAction = "recieve" + data.action//recieve health/damage/attack
-    console.log("Dealing Damage")
     io.to(data.target.id).emit(emitAction, {
       name: data.target.name,//Since monsters use the same socket, we need to validate by name
       roll: data.roll
@@ -114,7 +116,7 @@ io.on('connection', (socket) => {
           initiative: player.initiative,
         }
       }))
-
+      io.to(lobby).emit('logAction', target.name + " joined the game")
       io.to(lobby).emit('initiativeUpdate', connections[lobby])
     }
   })

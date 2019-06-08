@@ -18,6 +18,7 @@ import Entity from "./../Entity";
 import DungeonMaster from './../DungeonMaster'
 import NewCharacterForm from "./../NewCharacterForm"
 import NewDMForm from "./../NewDMForm"
+import Log from './../Log'
 import InitTracker from "./../InitTracker"
 import './style.scss'
 import Doorway from './../../images/283686.jpg'
@@ -68,7 +69,9 @@ export default class RouteBar extends React.Component {
           <Container>
             <Row>
               <Col><InitTracker socket={socket} style={{minHeight: "90%"}}/></Col>
-              <Col><Toast style={{minHeight: "90%"}}><ToastHeader>Combat Log</ToastHeader><ToastBody><i>@todo</i></ToastBody></Toast></Col>
+              <Col><Toast style={{minHeight: "90%"}}><ToastHeader>Combat Log</ToastHeader><ToastBody>
+                <Log socket={socket}/>
+              </ToastBody></Toast></Col>
             </Row>
             <Row>
               <Entity
