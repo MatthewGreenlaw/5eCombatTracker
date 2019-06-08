@@ -1,113 +1,122 @@
 const io = require('socket.io')()
 const port = 3001;
 var connections = []
-var targets = ["None"]
+var targets = []//DM can have multiple targets, so must keep a sperate list from connections
 
-function addConnection (data) {
+function addToLobbyArray (arr, data) {
   var lobby = data.lobby.toString()
-  if(connections[lobby.toString()] === undefined){
-    connections[lobby.toString()] = [{
-      id: data.socket.id,
-      type: data.socket.handshake.query.type,
-      name: data.socket.handshake.query.name,
-    }]
+  //New lobby, Initialize it
+  if (arr[lobby] === undefined) {
+    arr[lobby] = [data]
   }
+  //Lobby exists, add to it.
   else {
-    connections[data.lobby].push({
-      id: data.socket.id,
-      type: data.socket.handshake.query.type,
-      name: data.socket.handshake.query.name,
-    })
+    arr[lobby].push(data)
   }
-    console.log("New Connection:")
-    console.log(connections)
 }
 
-function removeConnection (id) {
-  for (var i in connections){
-    var lobby = connections[i]
-    for (var j in lobby){
-      var connection = lobby[j]
-      if (connection.id === id){
-        lobby.splice(j, 1)
+function removeFromLobbyArray (lobby, id) {
+  if(lobby !== undefined){
+    for(var i = lobby.length - 1; i >= 0; i--){
+      var item = lobby[i]//item is an object
+      if(item.id === id){
+        lobby.splice(i, 1)
+        console.log("Removing %s", item.name)
       }
-      if(connection.length < 1)
-        delete connections[i][j]
     }
-    if(connections[i].length < 1)
-      delete connections[i]
   }
+}
+
+function removeTarget(lobby, id){
+  removeFromLobbyArray(targets[lobby], id)
+  if(targets[lobby] !== undefined && targets[lobby].length < 1)
+    delete targets[lobby]
+  console.log("Removed Target:")
+  console.log(targets)
+}
+
+function removeConnection(lobby, id){
+  removeFromLobbyArray(connections[lobby], id)
+  if(connections[lobby].length < 1)
+    delete connections[lobby]
   console.log("Removed Connection:")
   console.log(connections)
 }
 
-function removeItem(list, socket) {
-  for (var i in list) {
-    if (list[i].id === socket.id){
-      list.splice(i, 1);
-
-      console.log("Removed:")
-      console.log(list)
-      return
+function updateInitiative(lobby, id, init) {
+  connections[lobby].forEach((connection) => {
+    if(connection.id === id){
+        connection.initiative = init
     }
-  }
+  })
 }
 
 io.on('connection', (socket) => {
   var lobby = socket.handshake.query.lobby;
-
-  addConnection({
+  socket.join(lobby)
+  addToLobbyArray(connections, {
     lobby: lobby,
-    socket: socket
+    id: socket.id,
+    type: socket.handshake.query.type,
+    name: socket.handshake.query.name,
+    initiative: '-',
   })
 
-  socket.join(lobby)
 
   socket.on('disconnect', () => {
-    removeConnection(socket.id)
-    removeItem(targets, socket.handshake.query.name)
-
+    removeTarget(lobby, socket.id)
+    removeConnection(lobby, socket.id)
+    io.to(lobby).emit('targetUpdate', targets[lobby])
   })
-  io.to(socket.id).emit('initTargets', connections[lobby])
-
-  io.emit('updateInitiative', connections)
 
   socket.on('updateInitiative', (player) => {
     console.log(player.name + " rolled " + player.init + " for initiative")
-    io.to(lobby).emit('updateInitiative', player)
+    updateInitiative(lobby, player.id, player.init)
+    io.to(lobby).emit('initiativeUpdate', connections[lobby])
   })
 
   socket.on('actionFromPlayer', (data) => {
+    console.log(data.source.name + " " +data.action + "ed " + data.target.name + " for " + data.roll)
     console.log(data)
-    console.log(data.player + " " +data.action + "ed " + data.target + " for " + data.roll)
 
-    io.to(lobby).emit('actionFromServer', {
-      player: data.player,
-      target: data.target,
+
+    io.to(lobby).emit('logAction', {
+      source: data.source.name,
+      target: data.target.name,
       action: data.action,
+      roll: data.roll
+    })
+
+    var emitAction = "recieve" + data.action//recieve health/damage/attack
+    console.log("Dealing Damage")
+    io.to(data.target.id).emit(emitAction, {
+      name: data.target.name,//Since monsters use the same socket, we need to validate by name
       roll: data.roll
     })
   })
 
-  socket.on('addTargets', (_targets) => {
-    _targets.forEach((target) => {
-      if(!targets.includes(target))
-        targets.push(target)
-    })
-    io.to(lobby).emit('updateTargets', targets)
-  })
+  //Adds a target to the targets array
+  //Called by Entity when the component mounts
+  socket.on('addTarget', (target) => {
+    if(!targets.includes(target)){
+      addToLobbyArray(targets, {
+        lobby: lobby,
+        id: socket.id,
+        type: socket.handshake.query.type,
+        name:target.name,
+      })
+      console.log("Added Target:")
+      console.log(targets)
+      io.to(lobby).emit('targetUpdate', targets[lobby])
+      io.to(lobby).emit('initiativeUpdate', connections[lobby].map((player) => {
+        return {
+          name: player.name,
+          initiative: player.initiative,
+        }
+      }))
 
-  socket.on('removeTarget', (target) => {
-    for (var i in targets){
-      var check = targets[i]
-      if(check = target)
-      targets.splice(i, 1)
+      io.to(lobby).emit('initiativeUpdate', connections[lobby])
     }
-    io.to(lobby).emit('updateTargets', targets)
-  })
-
-  socket.on('getPlayers', () => {
-    io.to(lobby).emit('sendPlayers', connections)
   })
 })
 

@@ -100,7 +100,7 @@ export default class DiceRoller extends React.Component {
   }
 
   rollAdvantage(rolls, i, values) {
-    console.log("Rolled Advantage")
+    // console.log("Rolled Advantage")
     var roll = rolls[i];
     var res = values[0] >= values[1] ? values[0] : values[1];
     roll.res = res + roll.mod + " (" + values[0] + ", " + values[1] + ")";

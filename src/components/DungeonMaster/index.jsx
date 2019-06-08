@@ -7,7 +7,6 @@ import {
 } from 'reactstrap'
 import InitTracker from './../InitTracker'
 import Entity from './../Entity'
-import {randomName} from './../utils/randomNameGenerator'
 
 export default class DungeonMaster extends React.Component {
   static propTypes = {

@@ -1,8 +1,8 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import {
-  Form, FormGroup, FormText,
-  Label, Input, Option,
+  Form, FormGroup,
+  Label, Input,
   Button, Jumbotron,
 } from 'reactstrap'
 import './style.scss'
@@ -10,10 +10,6 @@ import './style.scss'
 export default class NewCharacterForm extends React.Component {
   static propTypes = {
     callback: PropTypes.func,
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   render() {

@@ -1,28 +1,24 @@
 import React from 'react'
 import {
   Container,
-  Label, Input,
   Col, Row,
-  Toast, ToastHeader, ToastBody,
   Card, CardHeader, CardBody,
 } from 'reactstrap'
 import HealthTracker from './../HealthTracker'
 import ActionTracker from './../ActionTracker'
 
 export default class Entity extends React.Component {
-  constructor(props) {
-    super(props);
-    this.socket = this.props.socket
-  }
-
   componentDidMount () {
-    console.log("Adding %s", this.props.name)
-    this.socket.emit("addTargets", [this.props.name])
+    this.props.socket.emit("addTarget", {
+      name: this.props.name,
+    })
   }
 
   // componentWillUnmount() {
-  //   console.log("Removing %s", this.props.name)
-  //   this.socket.emit("removeTarget", this.props.name)
+  //   this.props.socket.emit("removeTarget", {
+  //     name: this.props.name,
+  //     id: this.props.socket.id,
+  //   })
   // }
 
   render(){
@@ -35,10 +31,10 @@ export default class Entity extends React.Component {
           <CardBody>
             <Row>
               <Col xs="3">
-                <HealthTracker character={this.props.name} ac={this.props.ac} max={this.props.maxHP} socket={this.socket}/>
+                <HealthTracker name={this.props.name} ac={this.props.ac} max={this.props.maxHP} socket={this.props.socket}/>
               </Col>
               <Col>
-                <ActionTracker name={this.props.name} socket={this.socket}/>
+                <ActionTracker name={this.props.name} socket={this.props.socket}/>
               </Col>
             </Row>
           </CardBody>

@@ -1,9 +1,6 @@
 import React, {Fragment} from 'react';
 import {
-  Jumbotron,
-  Navbar, Nav, NavItem, NavbarBrand, NavbarToggler,
-  Collapse,
-  Button,
+  Navbar, Nav, NavItem, NavbarBrand,
   Container,
   Row, Col,
   Toast, ToastHeader, ToastBody
@@ -110,9 +107,9 @@ export default class RouteBar extends React.Component {
       return <Container><DiceRoller/></Container>
     }
 
-    function redirectToLanding () {
-      return <Redirect to="/landing"/>;
-    }
+    // function redirectToLanding () {
+    //   return <Redirect to="/landing"/>;
+    // }
 
     function landing () {
       return (

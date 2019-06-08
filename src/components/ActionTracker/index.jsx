@@ -1,10 +1,8 @@
 import React, {Fragment} from 'react'
 import {
-  Container,
   Label, Input,
   Col, Row,
   Toast, ToastHeader, ToastBody,
-  Card, CardHeader, CardBody,
   FormGroup,
 } from 'reactstrap'
 
@@ -17,6 +15,11 @@ export default class ActionTracker extends React.Component {
     this.type = this.socket.io.opts.query.type
     this.name = this.props.name
 
+    this.state = {
+      target: {},
+      targets: [],
+      action: 'Attack',
+    }
 
     this.socket.on('actionFromServer', (data) => {
       var action;
@@ -28,32 +31,26 @@ export default class ActionTracker extends React.Component {
       var log = data.player + ' '+ action + ' '+ data.target + ' for ' + data.roll
       this.setState({log})
     })
+  }
 
-    this.state = {
-      target: '',
-      targets: [],
-      action: 'Attack',
-    }
-
+  componentDidMount () {
+    this.socket.on('targetUpdate', targets => this.setState({targets}))
   }
 
   render () {
 
-    this.socket.on('initTargets', targets => initTargets(targets))
-    this.socket.on('updateTargets', targets => this.setState({targets}))
-
-    var initTargets = (targets) => {
-      targets.map((target) => {
-        return target.name
-      })
-    }
     var rollerCallback = (roll) => {
-      if(this.state.target.length > 0){
+      if(this.state.target.name.length > 0){
         this.socket.compress(false).emit('actionFromPlayer',
           {
-            id: this.socket.id,
-            player: this.props.name,
-            target: this.state.target,
+            source: {
+              name: this.props.name,
+              id: this.socket.id
+            },
+            target: {
+              name: this.state.target.name,
+              id: this.state.target.id
+            },
             action: this.state.action,
             roll: roll,
           }
@@ -70,12 +67,21 @@ export default class ActionTracker extends React.Component {
     }
 
     var setTarget = (option) => {
-      var target = option.target.value
+      var targets = this.state.targets
+      var targetName = option.target.value
+      var target = {};
+      for (var i in targets){
+        var _target = targets[i]
+        if(_target.name === targetName){
+          target = _target
+          break;
+        }
+      }
       this.setState({target})
     }
 
     var targetOptions = () => {
-      return this.state.targets.map((die, i) => {return <option key={i}>{die}</option>})
+      return this.state.targets.map((target, i) => {return <option key={i}>{target.name}</option>})
     }
     return (
       <Fragment>
@@ -114,7 +120,7 @@ export default class ActionTracker extends React.Component {
             </Row>
             <Row>
               <Col>
-                {this.state.target.length > 0 ? <AttackRoller rollerCallback={rollerCallback} action={this.state.action}/> : null}
+                {this.state.target.name !== undefined ? <AttackRoller rollerCallback={rollerCallback} action={this.state.action}/> : console.log(this.state.target)}
               </Col>
             </Row>
           </ToastBody>

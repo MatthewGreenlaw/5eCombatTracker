@@ -109,7 +109,7 @@ export default class Dice extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     var setAdvantage = () => {
       this.props.callback(
         {

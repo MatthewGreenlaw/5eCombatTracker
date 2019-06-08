@@ -1,30 +1,45 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import {
   Table,
   Toast,
-  ToastHeader,
   ToastBody,
   Input,
-  Row,
-  Container
 } from 'reactstrap'
 import './styles.scss'
 
 export default class HealthTracker extends React.Component {
   static propTypes = {
-    character: PropTypes.string,
+    name: PropTypes.string,
     ac: PropTypes.number,
     max: PropTypes.number
   }
 
   constructor(props) {
     super(props);
+    this.updateDamage = this.updateDamage.bind(this)
     this.state = {
       current: this.props.max,
       temp: 0,
       damage: 0
     };
+
+    this.props.socket.on("recieveDamage", (damage) => {
+      console.log(damage)
+      if(this.props.name === damage.name)
+        this.updateDamage(this.state.damage + damage.roll)
+    });
+
+    this.props.socket.on("recieveHeal", healing => this.updateDamage(this.state.damage - healing));
+  }
+
+  updateDamage = (damage) => {
+    if (damage  < 0)
+      damage = 0
+    this.setState({
+      current: +this.props.max + this.state.temp - (damage),
+      damage: damage
+    })
   }
 
   render(){
@@ -47,18 +62,8 @@ export default class HealthTracker extends React.Component {
     }
 
     var setDamage = (e) => {
-      updateDamage(+e.target.value)
+      this.updateDamage(+e.target.value)
     }
-
-    var updateDamage = (damage) => {
-      this.setState({
-        current: +this.props.max + this.state.temp - (damage),
-        damage: damage
-      })
-    }
-
-    this.props.socket.on("receiveDamage", damage => updateDamage(this.state.damage + damage));
-
 
     return(
       <Toast fade={false}>
@@ -73,11 +78,7 @@ export default class HealthTracker extends React.Component {
             <tbody>
               <tr>
                 <td>Current HP</td>
-                <td>{this.state.current}</td>
-              </tr>
-              <tr>
-                <td>Max HP</td>
-                <td>{this.props.max}</td>
+                <td>{this.state.current + '/' + this.props.max}</td>
               </tr>
               <tr>
                 <td>Temp HP</td>

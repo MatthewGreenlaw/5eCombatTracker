@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { generateIntegers } from "./../utils/randomNumberGenerator";
 import {
   Table,
-  Form,
   Button,
   Input, Label,
   Toast, ToastBody, ToastHeader
@@ -21,37 +20,21 @@ export default class InitTracker extends React.Component {
     this.socket = this.props.socket
     this.name = this.socket.io.opts.query.name
 
-
-
     this.state = {
       players: [],//this.props.players.sort((a, b) => {return b.init - a.init}),
       init: null,
     };
+
+    this.socket.on("initiativeUpdate", players => this.setState({
+      players: players.sort((a, b) => {return b.initiative - a.initiative})
+    }));
   }
 
   render(){
     var playersRows = [];
     var modifier = 0;
-    this.socket.on("updateInitiative", player => updateInit(player));
-
-    var updateInit = (player) => {
-      var players = this.state.players
-      for (var i in players) {
-        var _player = players[i]
-        if(player.id === _player.id){
-          players[i].init = player.init
-          players = players.sort((a, b) => {return b.init - a.init})
-          this.setState({players})
-          return
-        }
-      }
-      players.push(player)
-      players = players.sort((a, b) => {return b.init - a.init})
-      this.setState({players})
-    }
 
     var rollInit = () => {
-      console.log("InitRoller")
       generateIntegers(
         (vals) => {
           sendInit(vals[0] + modifier)
@@ -93,7 +76,7 @@ export default class InitTracker extends React.Component {
       playersRows.push(
         <tr key={i}>
           <td>{player.name}</td>
-          <td>{player.init}</td>
+          <td>{player.initiative}</td>
         </tr>
       )
     })

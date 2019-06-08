@@ -8,7 +8,6 @@ import {
   FormGroup,
   Label,
   Input,
-  Card,
 } from "reactstrap";
 import "./styles.css";
 
@@ -142,7 +141,7 @@ export default class Dice extends React.Component {
       var _n = 1;
       if((this.state.advantage && this.state.disadvantage))
         _n = 1
-      else if(this.state.advantage && this.props.disableN || this.state.disadvantage && this.props.disableN)
+      else if((this.state.advantage && this.props.disableN) || (this.state.disadvantage && this.props.disableN))
         _n = 2
 
       return (
