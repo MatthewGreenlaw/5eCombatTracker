@@ -46,15 +46,15 @@ export default class NewCharacterForm extends React.Component {
         <Form>
           <FormGroup>
             <Label for="characterName">Name:</Label>
-            <Input type="text" name="name" id="characterName" placeholder="Your name..." onChange={e => name = e.target.value}/>
+            <Input type="text" name="name" id="characterName" placeholder="Monster's name..." onChange={e => name = e.target.value}/>
           </FormGroup>
           <FormGroup>
             <Label for="characterAC">Armor Class:</Label>
-            <Input type="number" name="ac" id="characterAC" placeholder="Your armor class..."onChange={e => ac = +e.target.value}/>
+            <Input type="number" name="ac" id="characterAC" placeholder="Monster's armor class..."onChange={e => ac = +e.target.value}/>
           </FormGroup>
           <FormGroup>
             <Label for="characterMaxHP">Maximum HP:</Label>
-            <Input type="number" name="ac" id="characterMaxHP" placeholder="Your maximum health points..." onChange={e => maxHP = +e.target.value}/>
+            <Input type="number" name="hp" id="characterMaxHP" placeholder="Monster's maximum health points..." onChange={e => maxHP = +e.target.value}/>
           </FormGroup>
           <Button onClick={sendData} block={true}>Submit</Button>
         </Form>

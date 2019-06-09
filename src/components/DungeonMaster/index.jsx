@@ -43,12 +43,11 @@ export default class DungeonMaster extends React.Component {
         socket={this.props.socket}
       />
 
-    monsters.push(newMonster);
-    this.setState({
-      addingMonsters: !this.state.addingMonsters,
-      monsters: monsters
-    })
-
+      monsters.push(newMonster);
+      this.setState({
+        addingMonsters: !this.state.addingMonsters,
+        monsters: monsters
+      })
     }
 
     return (
