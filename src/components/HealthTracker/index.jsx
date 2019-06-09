@@ -47,9 +47,25 @@ export default class HealthTracker extends React.Component {
     if (damage  < 0)
       damage = 0
 
+    var temp = this.state.temp;
+
+    var modifier = temp - damage
+
+    //var modifier, newTemp
+    //modifier = newTemp = this.state.temp - damage
+    var newTemp
+    if(modifier < 0){
+        newTemp = 0
+        damage = -(modifier)
+    }
+    else {
+      newTemp = modifier
+      damage = 0
+    }
 
     this.setState({
-      current: +this.props.max + this.state.temp - (damage),
+      current: +this.props.max + modifier,
+      temp: newTemp,
       damage: damage
     })
   }
@@ -74,8 +90,22 @@ export default class HealthTracker extends React.Component {
     }
 
     var setDamage = (e) => {
+      var value = +e.target.value
+      var diff = this.state.damage - value
 
-      this.updateDamage(+e.target.value)
+      if (diff === 1){//removed damaged
+        var newDamage = this.state.damage-1
+        if(newDamage < 0)
+          newDamage = 0
+
+        this.setState({
+          current: +this.props.max + this.state.temp - newDamage,
+          damage: newDamage
+        })
+      }
+      else{//added dammage
+        this.updateDamage(1)
+      }
     }
 
     return(
@@ -96,7 +126,7 @@ export default class HealthTracker extends React.Component {
               <tr>
                 <td>Temp HP</td>
                 <td><Input
-                  onChange={setTempHealth}
+                  onChange={setTempHealth} //@todo validate for negative #s
                   type="number"
                   placeholder={this.state.temp}
                   value={this.state.temp}
@@ -105,7 +135,7 @@ export default class HealthTracker extends React.Component {
               <tr>
                 <td>Damage</td>
                 <td><Input
-                onChange={setDamage}
+                onChange={setDamage} //@todo validate for negative #s
                 type="number"
                 placeholder={this.state.damage}
                 value={this.state.damage}
