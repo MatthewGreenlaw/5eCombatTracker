@@ -46,12 +46,12 @@ The DMCombatTracker component keeps track of the actions made by all players and
 
 # Stages of Development
 1. [X] [Stage 1](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-1): Dice Roller
-  1. [X] random.org API
+> 1. [X] random.org API
   2. [X] Dice
   3. [X] Dice Roller
 
 2. [X] [Stage 2](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-2): Player and DM Combat Tracker
-  1. [X] Add Player Form
+> 1. [X] Add Player Form
   2. [X] Initiative Tracker
   3. [X] Action Tracker
   4. [X] Attack Roller
