@@ -123,7 +123,7 @@ export default class RouteBar extends React.Component {
             </BannerImage>
             <Content title={"Welcome to the dungeon..."}  height={.7}>
               <Toast style={{width: "100%"}}><ToastHeader>Join A Game!</ToastHeader><ToastBody>Get your DM's ID and and join their game as a <Link to="/PlayerTracker" id="player">player</Link>.</ToastBody></Toast>
-              <Toast style={{width: "100%"}}><ToastHeader>Start A Game</ToastHeader><ToastBody>Get your friends together to play a game. All you have to do is give them your DM ID and start <Link to="/DMTracker" id="player">DMing</Link>.</ToastBody></Toast>
+              <Toast style={{width: "100%"}}><ToastHeader>Start A Game!</ToastHeader><ToastBody>Get your friends together to play a game. All you have to do is give them your DM ID and start <Link to="/DMTracker" id="player">DMing</Link>.</ToastBody></Toast>
               <Toast style={{width: "100%"}}><ToastHeader>Need some dice?</ToastHeader><ToastBody>Don't forget about our luxurious <Link to="/roller/">dice roller</Link>.</ToastBody></Toast>
             </Content>
           </div>
@@ -131,11 +131,11 @@ export default class RouteBar extends React.Component {
           <BannerImage src={Dungeon} height={.3}>
             <BannerHeader> Credits & Project Information</BannerHeader>
           </BannerImage>
-          <Content title={"Meet the Devs"}  height={.7}>
+          <Content title={"Meet the Devs, contribute..."}  height={.7}>
             <Row>
               <Col>
-                <Toast style={{width: "100%"}}><ToastHeader>Matthew Greenlaw</ToastHeader><ToastBody>Check out <a href={'https://matthewgreenlaw.github.io/portfolio/'} target={"_Blank"}>Matt's portfolio</a></ToastBody></Toast>
-                <Toast style={{width: "100%"}}><ToastHeader>Theron Anderson</ToastHeader><ToastBody>Check out <a href={'https://atheron80.github.io/'} target={"_Blank"}>Theron's portfolio</a></ToastBody></Toast>
+                <Toast style={{width: "100%"}}><ToastHeader>Developer: Matthew Greenlaw</ToastHeader><ToastBody>Check out <a href={'https://matthewgreenlaw.github.io/portfolio/'} target={"_Blank"}>Matt's portfolio</a></ToastBody></Toast>
+                <Toast style={{width: "100%"}}><ToastHeader>Developer: Theron Anderson</ToastHeader><ToastBody>Check out <a href={'https://atheron80.github.io/'} target={"_Blank"}>Theron's portfolio</a></ToastBody></Toast>
               </Col>
             </Row>
             <Row>

@@ -74,6 +74,7 @@ export default class HealthTracker extends React.Component {
     }
 
     var setDamage = (e) => {
+
       this.updateDamage(+e.target.value)
     }
 
@@ -95,19 +96,19 @@ export default class HealthTracker extends React.Component {
               <tr>
                 <td>Temp HP</td>
                 <td><Input
-                  onChange={setTempHealth} //@todo validate for negative #s
+                  onChange={setTempHealth}
                   type="number"
                   placeholder={this.state.temp}
-                  value={temp}
+                  value={this.state.temp}
                   className={"width-sm"} /></td>
               </tr>
               <tr>
                 <td>Damage</td>
                 <td><Input
-                onChange={setDamage} //@todo validate for negative #s
+                onChange={setDamage}
                 type="number"
                 placeholder={this.state.damage}
-                value={damage}
+                value={this.state.damage}
                 className={"width-sm"} /></td>
               </tr>
             </tbody>

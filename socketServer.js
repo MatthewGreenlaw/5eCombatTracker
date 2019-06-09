@@ -66,14 +66,13 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     removeTarget(lobby, socket.id)
     removeConnection(lobby, socket.id)
-    io.to(lobby).emit('logAction', socket.handshake.query.name + " left the game")
+    io.to(lobby).emit('logAction', socket.handshake.query.name + " left the game.")
     io.to(lobby).emit('targetUpdate', targets[lobby])
   })
 
   socket.on('updateInitiative', (player) => {
-    console.log(player.name + " rolled " + player.init + " for initiative")
     updateInitiative(lobby, player.id, player.init)
-    io.to(lobby).emit('logAction', player.name + " rolled " + player.init + " initiative.")
+    io.to(lobby).emit('logAction', player.name + "'s initiative is " + player.init + '.')
     io.to(lobby).emit('initiativeUpdate', connections[lobby])
   })
 
@@ -87,7 +86,7 @@ io.on('connection', (socket) => {
     else
       action = data.action.toLowerCase()+'ed'
 
-    var log = data.source.name + ' '+ action + ' '+ data.target.name + ' for ' + data.roll
+    var log = data.source.name + ' '+ action + ' '+ data.target.name + ' for ' + data.roll + '.'
     io.to(lobby).emit('logAction',log)
 
     var emitAction = "recieve" + data.action//recieve health/damage/attack
@@ -116,7 +115,7 @@ io.on('connection', (socket) => {
           initiative: player.initiative,
         }
       }))
-      io.to(lobby).emit('logAction', target.name + " joined the game")
+      io.to(lobby).emit('logAction', target.name + " joined the game.")
       io.to(lobby).emit('initiativeUpdate', connections[lobby])
     }
   })
