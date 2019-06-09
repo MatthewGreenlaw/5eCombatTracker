@@ -29,6 +29,7 @@ The DMCombatTracker component keeps track of the actions made by all players and
      style="float: left; margin-right: 10px; max-width: 320px;" />  
 
 4. Lookup Tool  
+
 <img src="ReadmePictures/LookupTool_wireframe.png"
      alt="Wireframe for /LookupTool component"
      style="float: left; margin-right: 10px; max-width: 320px;" />
