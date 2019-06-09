@@ -2,7 +2,7 @@ import React from 'react'
 import {
   Container,
   Col, Row,
-  Card, CardHeader, CardBody,
+  Toast, ToastHeader, ToastBody
 } from 'reactstrap'
 import HealthTracker from './../HealthTracker'
 import ActionTracker from './../ActionTracker'
@@ -24,11 +24,11 @@ export default class Entity extends React.Component {
   render(){
     return (
       <Container>
-        <Card style={{height: "93%"}}>
-          <CardHeader>
-            {this.props.name}
-          </CardHeader>
-          <CardBody>
+        <Toast style={{height: "93%"}}>
+          <ToastHeader>
+            {this.props.name + " (AC: "+ this.props.ac+ ")"}
+          </ToastHeader>
+          <ToastBody>
             <Row>
               <Col xs="3">
                 <HealthTracker name={this.props.name} ac={this.props.ac} max={this.props.maxHP} socket={this.props.socket}/>
@@ -37,8 +37,8 @@ export default class Entity extends React.Component {
                 <ActionTracker name={this.props.name} socket={this.props.socket}/>
               </Col>
             </Row>
-          </CardBody>
-        </Card>
+          </ToastBody>
+        </Toast>
       </Container>
     )
   }

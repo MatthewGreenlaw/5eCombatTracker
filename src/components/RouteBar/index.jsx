@@ -1,25 +1,25 @@
 import React, {Fragment} from 'react';
+import openSocket from 'socket.io-client';
 import {
   Navbar, Nav, NavItem, NavbarBrand,
   Container,
   Row, Col,
   Toast, ToastHeader, ToastBody
 } from 'reactstrap'
-import { BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
-import openSocket from 'socket.io-client';
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, Switch
+} from 'react-router-dom';
 
 import {
-  BannerImage,
-  BannerHeader,
-  Content,
-} from './../Parallax/ParallaxComponents'
-import DiceRoller from './../DiceRoller'
-import Entity from "./../Entity";
-import DungeonMaster from './../DungeonMaster'
-import NewCharacterForm from "./../NewCharacterForm"
-import NewDMForm from "./../NewDMForm"
-import Log from './../Log'
-import InitTracker from "./../InitTracker"
+  BannerImage,BannerHeader, Content,
+  DiceRoller,
+  Player,
+  DungeonMaster,
+  InitTracker,
+  NewCharacterForm,
+  NewDMForm,
+} from "./../../components"
 import './style.scss'
 import Doorway from './../../images/283686.jpg'
 import Dungeon from './../../images/dungeon.jpg'
@@ -33,12 +33,14 @@ export default class RouteBar extends React.Component {
     var newPlayer = true;
     var newDM = true;
     var socket;
-    console.log("Generate")
+
+
 
     function DM() {
       if(dmData === undefined)
         return <Redirect to="/addNewDM"/>;
 
+      //prevent opening multiple sockets for the same DM
       if(newDM){
         newDM = !newDM;
         socket = openSocket('http://matthewgreenlaw.com:3001', {query: {type: "DM", name:"Monsters", lobby: dmData.lobby}})
@@ -51,11 +53,11 @@ export default class RouteBar extends React.Component {
       return <Container><DungeonMaster socket={socket}/></Container>
     }
 
-    function Player () {
+    function Character () {
       if(playerData === undefined)
         return <Redirect to="/addNewPlayer"/>;
 
-      //Prevent multiple connections
+      //prevent opening multiple sockets for the same player
       if(newPlayer){
         newPlayer = !newPlayer;
         socket = openSocket('http://matthewgreenlaw.com:3001', {query: {type: "Player", name: playerData.name, lobby: playerData.lobby}})
@@ -65,36 +67,17 @@ export default class RouteBar extends React.Component {
           name: playerData.name
         })
       }
-      return (
-          <Container>
-            <Row>
-              <Col><InitTracker socket={socket} style={{minHeight: "90%"}}/></Col>
-              <Col><Toast style={{minHeight: "90%"}}><ToastHeader>Combat Log</ToastHeader><ToastBody>
-                <Log socket={socket}/>
-              </ToastBody></Toast></Col>
-            </Row>
-            <Row>
-              <Entity
-                name={playerData.name}
-                ac={playerData.ac}
-                maxHP={playerData.maxHP}
-                init={playerData.init}
-                socket={socket}
-              />
-            </Row>
-          </Container>
-      )
+
+      return <Container><Player socket={socket} playerData={playerData}/></Container>
     }
 
     function playerDataCallback (data) {
       playerData = data;
-      //return <Redirect push to='/player'/>
       document.getElementById('player').click()
     }
 
     function dmDataCallback (data) {
       dmData = data;
-      //return <Redirect push to='/player'/>
       document.getElementById('dungionMaster').click()
     }
 
@@ -109,10 +92,6 @@ export default class RouteBar extends React.Component {
     function dice() {
       return <Container><DiceRoller/></Container>
     }
-
-    // function redirectToLanding () {
-    //   return <Redirect to="/landing"/>;
-    // }
 
     function landing () {
       return (
@@ -146,7 +125,6 @@ export default class RouteBar extends React.Component {
             </Row>
           </Content>
         </div>
-
       </Fragment>
       )
     }
@@ -186,7 +164,7 @@ export default class RouteBar extends React.Component {
           />
           <Route
             path="/PlayerTracker"
-            component={Player}
+            component={Character}
           />
           <Route
             path="/DMTracker"

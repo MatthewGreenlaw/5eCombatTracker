@@ -20,19 +20,8 @@ export default class ActionTracker extends React.Component {
       targets: [],
       action: 'Attack',
     }
-
-    this.socket.on('actionFromServer', (data) => {
-      var action;
-      if (data.action === 'Damage')
-        action = "damaged"
-      else
-        action = data.action.toLowerCase()+'ed'
-
-      var log = data.player + ' '+ action + ' '+ data.target + ' for ' + data.roll
-      this.setState({log})
-    })
   }
-
+  
   componentDidMount () {
     this.socket.on('targetUpdate', targets => this.setState({targets}))
   }
@@ -87,7 +76,6 @@ export default class ActionTracker extends React.Component {
       <Fragment>
 
         <Toast>
-          <ToastHeader>{"Log: " + (this.state.log === undefined ? 'Welcome' : this.state.log)}</ToastHeader>
           <ToastBody>
             <Row form>
               <Col md={5}>

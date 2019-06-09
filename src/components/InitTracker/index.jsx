@@ -22,7 +22,8 @@ export default class InitTracker extends React.Component {
 
     this.state = {
       players: [],//this.props.players.sort((a, b) => {return b.init - a.init}),
-      init: null,
+      init: 0,
+      modifier: 0,
     };
 
     this.socket.on("initiativeUpdate", players => this.setState({
@@ -32,12 +33,11 @@ export default class InitTracker extends React.Component {
 
   render(){
     var playersRows = [];
-    var modifier = 0;
 
     var rollInit = () => {
       generateIntegers(
         (vals) => {
-          sendInit(vals[0] + modifier)
+          sendInit(vals[0] + this.state.modifier)
         },
         { n: 1, min: 1, max: 20, replacement: true }
       )
@@ -51,15 +51,20 @@ export default class InitTracker extends React.Component {
       });
     }
 
+    var setInit = (e) => {
+      var modifier = +e.target.value
+      this.setState({modifier})
+    }
+
     var displayInitRoller = () => {
       return (
         <Fragment>
-        modifier
+        Modifier
         <Label>
           <Input
             type="number"
-            onChange={e => modifier = +e.target.value}
-            placeholder={modifier}
+            onChange={setInit}
+            placeholder={this.state.modifier}
             className={"diceInput"}
           />
         </Label>
