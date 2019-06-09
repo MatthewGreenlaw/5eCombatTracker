@@ -47,33 +47,33 @@ The DMCombatTracker component keeps track of the actions made by all players and
 # Stages of Development
 1. [X] [Stage 1](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-1): Dice Roller
 > 1. [X] random.org API
-  2. [X] Dice
-  3. [X] Dice Roller
+> 2. [X] Dice
+> 3. [X] Dice Roller
 
 2. [X] [Stage 2](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-2): Player and DM Combat Tracker
 > 1. [X] Add Player Form
-  2. [X] Initiative Tracker
-  3. [X] Action Tracker
-  4. [X] Attack Roller
-  5. [X] Health Tracker
-  6. [X] Log
-  7. [X] Player
-  8. [X] New Monster Form
-  9. [X] Dungeon Master Tracker
-  10. [X] Landing Page
+> 2. [X] Initiative Tracker
+> 3. [X] Action Tracker
+> 4. [X] Attack Roller
+> 5. [X] Health Tracker
+> 6. [X] Log
+> 7. [X] Player
+> 8. [X] New Monster Form
+> 9. [X] Dungeon Master Tracker
+> 10. [X] Landing Page
 
 3. [ ] [Stage 3](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-3): Bug Fixes and Advanced Attack Roller
-  1. [ ] Maintenance:
-    * [ ] Ability to remove monsters in DungeonMaster
-    * [ ] Fix adding new monster bug in DungeonMaster
-  3. [ ] Allow users to add multiple damage dice
-  4. [ ] Allow users to attack and do damage on success in one click
+> 1. [ ] Maintenance:
+>> * [ ] Ability to remove monsters in DungeonMaster
+>> * [ ] Fix adding new monster bug in DungeonMaster
+> 2. [ ] Allow users to add multiple damage dice
+> 3. [ ] Allow users to attack and do damage on success in one click
 
 4. [ ] [Stage 4](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-4): Chat
-  1. [ ] Add chat feature to Log component
+> 1. [ ] Add chat feature to Log component
 
 5. [ ] [Stage 5](https://github.com/MatthewGreenlaw/5eCombatTracker/releases/tag/Stage-5): Lookup Tool
-  1. [ ] LookupTool component
+> 1. [ ] LookupTool component
 
 
 ## Known Bugs / Issues
